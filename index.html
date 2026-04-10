@@ -5,295 +5,302 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>The Vineyard at Messina — Much Ado About Nothing</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  --wine:       #8b1a1a;
-  --wine-mid:   #c0392b;
-  --vine-dark:  #2d5a1b;
-  --vine-mid:   #4a8c2a;
-  --vine-light: #8bc34a;
-  --earth:      #7a5230;
-  --gold:       #c8941a;
-  --cream:      #faf4e4;
-  --panel:      rgba(252,248,234,0.95);
-  --border:     #9b7040;
-  --text:       #3a2010;
-  --text-mid:   #6b4226;
+  --wine:      #8b1a1a;
+  --wine-lt:   #c0392b;
+  --vine:      #2d5a1b;
+  --vine-lt:   #4a8c2a;
+  --gold:      #b8860b;
+  --text:      #18100a;
+  --text-mid:  #5c3a1e;
+  --text-soft: #8a6040;
+  --panel:     #ffffff;
+  --cream-bg:  #fffbf4;
+  --border:    rgba(139,90,48,0.18);
+  --sh:        0 4px 24px rgba(0,0,0,0.12),0 1px 4px rgba(0,0,0,0.06);
+  --sh-lg:     0 12px 48px rgba(0,0,0,0.18),0 3px 10px rgba(0,0,0,0.1);
 }
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden;color:var(--text)}
 
-body { min-height: 100vh; font-family: 'Lato', Georgia, sans-serif; color: var(--text); overflow-x: hidden; }
-
-/* ── VINEYARD BACKGROUND ── */
-#scene {
-  position: fixed; inset: 0; z-index: 0;
-  background: linear-gradient(
-    to bottom,
-    #5aabdc 0%, #8ecef5 18%, #c8e8f8 32%,
-    #d8efc0 38%, #7ab84a 39%, #5a9a32 50%,
-    #48841e 60%, #6b5020 72%, #503c14 100%
-  );
+/* ── VINEYARD SCENE ── */
+#scene{
+  position:fixed;inset:0;z-index:0;
+  background:linear-gradient(to bottom,
+    #3d7fb8 0%,#6eaed8 14%,#9ecce8 26%,#c4e0b8 34%,
+    #5ea030 35%,#408020 46%,#306818 58%,
+    #7a5820 72%,#503c14 100%);
 }
-#scene::before {
-  content: '';
-  position: absolute; bottom: 0; left: 0; right: 0; height: 42%;
-  background-image: repeating-linear-gradient(
-    to bottom, transparent 0, transparent 16px,
-    rgba(20,50,5,0.35) 16px, rgba(20,50,5,0.35) 20px
-  );
+#scene::before{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:42%;
+  background-image:repeating-linear-gradient(
+    to bottom,transparent 0,transparent 16px,rgba(12,36,4,0.28) 16px,rgba(12,36,4,0.28) 20px);
 }
-#scene::after {
-  content: '';
-  position: absolute; top: 5%; right: 14%;
-  width: 72px; height: 72px;
-  background: radial-gradient(circle, #fff7a0 20%, #ffd700 55%, transparent 100%);
-  border-radius: 50%;
-  box-shadow: 0 0 50px 20px rgba(255,210,0,0.35);
+#scene::after{
+  content:'';position:absolute;top:4%;right:12%;
+  width:88px;height:88px;border-radius:50%;
+  background:radial-gradient(circle,#fffde0 10%,#ffd700 48%,transparent 100%);
+  box-shadow:0 0 70px 28px rgba(255,210,0,0.28);
 }
 
-/* ── ROSE TRACKER ── */
-#rose-tracker {
-  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
-  z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 2px;
-  background: rgba(252,248,234,0.92); border: 1.5px solid rgba(155,112,64,0.4);
-  border-radius: 14px; padding: 10px 6px;
-  box-shadow: 0 4px 20px rgba(60,30,10,0.2); min-width: 40px;
-}
-.rt-label { font-size: 0.5rem; text-transform: uppercase; letter-spacing: 1px; color: var(--earth); font-weight: 700; margin-bottom: 5px; text-align: center; }
-.rose-slot { font-size: 1.1rem; line-height: 1.15; opacity: 0.18; transition: opacity 0.5s, transform 0.5s; transform: scale(0.7); }
-.rose-slot.bloomed { opacity: 1; transform: scale(1.1); animation: bloom-pop 0.5s cubic-bezier(.2,1.4,.5,1) forwards; }
-@keyframes bloom-pop { 0%{transform:scale(0.5)} 60%{transform:scale(1.25)} 100%{transform:scale(1.1)} }
-.rt-count { font-size: 0.58rem; color: var(--wine); font-weight: 700; margin-top: 5px; }
-.rt-div { width: 26px; border: none; border-top: 1px solid rgba(155,112,64,0.3); margin: 3px 0; }
+/* ── DARK OVERLAY — key to readability ── */
+#overlay{position:fixed;inset:0;z-index:1;background:rgba(8,4,1,0.62)}
 
-/* ── MAIN LAYOUT ── */
-#app {
-  position: relative; z-index: 5; min-height: 100vh;
-  display: flex; align-items: flex-start; justify-content: center;
-  padding: 20px 58px 20px 20px;
+/* ── VINE TRACKER (right panel) ── */
+#vine-tracker{
+  position:fixed;right:0;top:0;bottom:0;width:70px;
+  z-index:20;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  background:rgba(255,252,244,0.97);
+  border-left:1px solid rgba(139,90,48,0.22);
+  box-shadow:-4px 0 24px rgba(0,0,0,0.14);
+  padding:20px 0;gap:0;
 }
-.screen { display: none; width: 100%; max-width: 780px; margin-top: 20px; }
-.screen.active { display: block; }
+.vt-lbl{font-size:.46rem;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-soft);margin-bottom:10px}
+#vine-svg-wrap{flex:1;display:flex;align-items:center;justify-content:center}
+.vt-count{font-family:'Playfair Display',serif;font-size:.82rem;color:var(--wine);font-weight:700;margin-top:10px}
+.vine-rose-inner{transition:transform .65s cubic-bezier(.2,1.4,.4,1)}
+
+/* ── MAIN APP ── */
+#app{position:relative;z-index:5;min-height:100vh;display:flex;align-items:flex-start;justify-content:center;padding:20px 82px 20px 20px}
+.screen{display:none;width:100%;max-width:720px;padding-top:14px}
+.screen.active{display:block}
 
 /* ── PANEL ── */
-.panel {
-  background: var(--panel); border: 2px solid var(--border); border-radius: 10px;
-  box-shadow: 0 8px 36px rgba(60,30,10,0.22), 0 2px 8px rgba(60,30,10,0.12);
-  position: relative;
-}
-.panel-leaf { position: absolute; font-size: 20px; pointer-events: none; opacity: 0.6; }
-.panel-leaf.tl { top: -4px; left: 10px; transform: rotate(-40deg); }
-.panel-leaf.br { bottom: -4px; right: 10px; transform: rotate(140deg); }
+.panel{background:var(--panel);border-radius:14px;box-shadow:var(--sh-lg);border:1px solid var(--border)}
 
-/* ── INTRO ── */
-#intro { text-align: center; }
-.intro-inner { padding: 32px 28px 36px; }
-.intro-deco { font-size: 64px; margin-bottom: 10px; animation: grapesway 2.5s ease-in-out infinite; }
-@keyframes grapesway { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
-.game-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.7rem, 5vw, 2.9rem);
-  color: var(--wine); text-shadow: 1px 2px 4px rgba(0,0,0,0.12);
-  line-height: 1.2; margin-bottom: 4px;
-}
-.game-subtitle {
-  font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(0.85rem, 2vw, 1.05rem); color: var(--earth);
-  letter-spacing: 1px; margin-bottom: 22px;
-}
-.intro-flavor {
-  font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: 1rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 18px;
-}
-.rules-box {
-  background: rgba(139,101,48,0.07); border: 1px solid rgba(139,101,48,0.22);
-  border-radius: 8px; padding: 14px 20px; margin-bottom: 22px; text-align: left;
-}
-.rules-box h3 { font-family: 'Playfair Display', serif; color: var(--vine-dark); margin-bottom: 10px; font-size: 1rem; }
-.rules-box li { list-style: none; padding: 3px 0; font-size: 0.93rem; color: var(--text-mid); line-height: 1.5; }
-.rules-box li::before { content: '🍇 '; }
-.btn-wine {
-  font-family: 'Playfair Display', serif; font-size: 1.05rem;
-  color: var(--cream); background: linear-gradient(135deg, #6a1010 0%, var(--wine-mid) 50%, #6a1010 100%);
-  border: 2px solid #5a0e0e; padding: 13px 40px; cursor: pointer;
-  border-radius: 6px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(139,26,26,0.4);
-}
-.btn-wine:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(139,26,26,0.5); }
+/* ══════════════════════════════════════
+   INTRO
+══════════════════════════════════════ */
+#intro{text-align:center}
+.intro-body{padding:44px 40px 48px}
 
-/* ── HUD ── */
-.hud {
-  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
-  padding: 10px 16px; background: rgba(252,248,234,0.9);
-  border: 1px solid rgba(139,101,48,0.28); border-radius: 8px;
-  margin-bottom: 10px; box-shadow: 0 2px 8px rgba(60,30,10,0.1);
-}
-.hud-stat { display: flex; flex-direction: column; }
-.hud-stat.right { align-items: flex-end; }
-.hud-lbl { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--earth); font-weight: 700; }
-.hud-val { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--wine); font-weight: 700; }
-.hud-center { text-align: center; font-size: 0.82rem; color: var(--text-mid); font-weight: 700; }
+.eyebrow{display:inline-flex;align-items:center;gap:6px;font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--vine);background:rgba(45,90,27,.08);border:1px solid rgba(45,90,27,.25);border-radius:20px;padding:5px 14px;margin-bottom:20px}
 
-.bar-wrap { height: 8px; background: rgba(139,101,48,0.14); border-radius: 4px; margin-bottom: 8px; overflow: hidden; border: 1px solid rgba(139,101,48,0.18); }
-.bar-fill { height: 100%; border-radius: 4px; transition: width 0.45s ease; }
-#progress-fill { background: linear-gradient(90deg, var(--vine-dark), var(--vine-light)); }
-#timer-fill { background: linear-gradient(90deg, var(--wine-mid) 0%, var(--gold) 55%, var(--vine-mid) 100%); transition: width 1s linear; }
+.intro-title{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:var(--wine);line-height:1.1;margin-bottom:6px}
+.intro-sub{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.95rem,2vw,1.18rem);color:var(--text-mid);margin-bottom:28px}
 
-/* ── QUOTE CARD ── */
-.quote-card {
-  padding: 22px 28px 18px; margin-bottom: 14px; text-align: center;
-  min-height: 165px; display: flex; flex-direction: column; justify-content: center; gap: 8px;
-}
-.act-tag { font-size: 0.68rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--earth); font-weight: 700; }
-.vine-ornament { color: var(--vine-mid); opacity: 0.5; font-size: 1rem; letter-spacing: 8px; }
-.quote-text {
-  font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(0.98rem, 2.2vw, 1.13rem); line-height: 1.78; color: var(--text); padding: 0 8px;
-}
-.who-prompt { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--wine); font-weight: 700; margin-top: 4px; }
+.divider-ornament{display:flex;align-items:center;gap:10px;margin:20px 0;color:rgba(139,90,48,.35);font-size:.9rem}
+.divider-ornament::before,.divider-ornament::after{content:'';flex:1;height:1px;background:rgba(139,90,48,.18)}
 
-/* ── CHARACTER GRID ── */
-.char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
-@media (min-width: 480px) { .char-grid { grid-template-columns: repeat(4, 1fr); } }
+.intro-flavor{font-family:'Playfair Display',serif;font-style:italic;font-size:1.02rem;color:var(--text-mid);line-height:1.82;margin-bottom:28px}
 
-.char-btn {
-  background: var(--panel); border: 2px solid; border-radius: 8px;
-  padding: 14px 8px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  position: relative; overflow: visible;
+.rules-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:32px;text-align:left}
+.rule-card{background:var(--cream-bg);border:1px solid var(--border);border-radius:10px;padding:14px 16px;display:flex;align-items:flex-start;gap:10px}
+.rule-icon{font-size:1.25rem;flex-shrink:0;margin-top:1px}
+.rule-body strong{display:block;font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--text);margin-bottom:3px}
+.rule-body span{font-size:.83rem;color:var(--text-mid);line-height:1.5}
+
+/* ── BUTTONS ── */
+.btn-primary{
+  font-family:'Playfair Display',serif;font-size:1.05rem;color:#fff;
+  background:linear-gradient(135deg,#5a0e0e 0%,#a82424 55%,#5a0e0e 100%);
+  border:1px solid rgba(0,0,0,.18);padding:14px 48px;cursor:pointer;
+  border-radius:8px;transition:all .2s;letter-spacing:.3px;
+  box-shadow:0 4px 18px rgba(139,26,26,.38),inset 0 1px 0 rgba(255,255,255,.12);
 }
-.char-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(60,30,10,0.2); }
-.char-btn:disabled { cursor: default; }
-.char-portrait {
-  width: 58px; height: 58px; border-radius: 50%; border: 2px solid;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 26px; background: var(--cream); position: relative; z-index: 1;
-  transition: transform 0.3s;
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(139,26,26,.48),inset 0 1px 0 rgba(255,255,255,.12)}
+.btn-primary:active{transform:none}
+
+.btn-continue{
+  font-family:'Inter',sans-serif;font-size:.88rem;font-weight:600;color:#fff;
+  background:linear-gradient(135deg,var(--vine),var(--vine-lt));
+  border:1px solid rgba(0,0,0,.12);padding:11px 38px;cursor:pointer;
+  border-radius:8px;transition:all .2s;
+  box-shadow:0 3px 14px rgba(45,90,27,.32);
+  opacity:0;pointer-events:none;
 }
-.char-btn:hover .char-portrait { transform: scale(1.08); }
-.char-name {
-  font-family: 'Playfair Display', serif; font-size: 0.7rem;
-  color: var(--text); text-align: center; line-height: 1.3; font-weight: 700; position: relative; z-index: 1;
+.btn-continue.show{opacity:1;pointer-events:all}
+.btn-continue:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(45,90,27,.42)}
+
+/* ══════════════════════════════════════
+   HUD
+══════════════════════════════════════ */
+.hud{
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  padding:12px 20px;background:rgba(255,255,255,.98);
+  border:1px solid var(--border);border-radius:12px;
+  margin-bottom:10px;box-shadow:var(--sh);
 }
+.hud-stat{display:flex;flex-direction:column}
+.hud-stat.r{align-items:flex-end}
+.hud-lbl{font-size:.55rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-soft)}
+.hud-val{font-family:'Playfair Display',serif;font-size:1.12rem;color:var(--wine);font-weight:700}
+.hud-center{text-align:center;font-size:.8rem;color:var(--text-mid);font-weight:600}
+
+.bar-wrap{height:5px;background:rgba(0,0,0,.07);border-radius:3px;margin-bottom:8px;overflow:hidden}
+.bar-fill{height:100%;border-radius:3px;transition:width .5s ease}
+#pbar{background:linear-gradient(90deg,var(--vine),var(--vine-lt))}
+#tbar{background:linear-gradient(90deg,#e53935 0%,var(--gold) 50%,var(--vine-lt) 100%);transition:width 1s linear}
+
+/* ══════════════════════════════════════
+   QUOTE CARD
+══════════════════════════════════════ */
+.quote-card{
+  padding:26px 36px 22px;margin-bottom:12px;
+  text-align:center;min-height:158px;
+  display:flex;flex-direction:column;justify-content:center;gap:10px;
+  border-top:4px solid var(--wine);
+}
+.act-pill{display:inline-flex;align-items:center;justify-content:center;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--vine);background:rgba(45,90,27,.07);border:1px solid rgba(45,90,27,.2);border-radius:20px;padding:4px 12px;margin:0 auto}
+.q-mark{font-family:Georgia,serif;font-size:3.8rem;line-height:.5;color:var(--wine);opacity:.2;align-self:flex-start;margin-bottom:-6px}
+.q-text{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(.97rem,2.1vw,1.1rem);line-height:1.84;color:var(--text)}
+.q-who{font-size:.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--wine);margin-top:4px}
+
+/* ══════════════════════════════════════
+   CHARACTER GRID
+══════════════════════════════════════ */
+.char-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-bottom:10px}
+@media(min-width:480px){.char-grid{grid-template-columns:repeat(4,1fr)}}
+
+.char-btn{
+  background:#fff;border:1.5px solid rgba(0,0,0,.09);border-left:4px solid;
+  border-radius:10px;padding:14px 8px 12px;cursor:pointer;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  position:relative;overflow:visible;
+  box-shadow:0 2px 10px rgba(0,0,0,.07);
+  transition:transform .15s,box-shadow .15s;
+}
+.char-btn:hover:not(:disabled){transform:translateY(-3px);box-shadow:0 8px 26px rgba(0,0,0,.13)}
+.char-btn:disabled{cursor:default}
+
+.char-portrait{
+  width:54px;height:54px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;border:2px solid;
+  position:relative;z-index:1;
+  transition:transform .25s;
+}
+.char-btn:hover .char-portrait{transform:scale(1.1)}
+
+.char-name{
+  font-family:'Playfair Display',serif;font-size:.68rem;font-weight:700;
+  color:var(--text);text-align:center;line-height:1.3;
+  position:relative;z-index:1;
+}
+
+/* Answered states */
+.char-btn.st-correct{background:#f0fff4!important;border-color:#27662e!important;border-left-color:#27662e!important;box-shadow:0 0 0 3px rgba(39,102,46,.2)!important}
+.char-btn.st-wrong  {background:#fff5f5!important;border-color:#c53030!important;border-left-color:#c53030!important}
 
 /* ── LEAVES ── */
-.btn-leaf {
-  position: absolute; pointer-events: none; z-index: 4;
-  border-radius: 50% 0 50% 0;
-  transition: transform 0.55s cubic-bezier(.15,1.4,.5,1), opacity 0.45s ease;
+.btn-leaf{
+  position:absolute;pointer-events:none;z-index:4;
+  border-radius:50% 0 50% 0;
+  transition:transform .55s cubic-bezier(.15,1.4,.5,1),opacity .42s ease;
 }
-.btn-leaf::after {
-  content: ''; position: absolute; top: 50%; left: 10%;
-  width: 80%; height: 1px; background: rgba(0,0,0,0.18);
-  transform: translateY(-50%) rotate(-45deg);
-}
-.btn-leaf.scatter { opacity: 0 !important; }
+.btn-leaf::after{content:'';position:absolute;top:50%;left:10%;width:80%;height:1px;background:rgba(0,0,0,.14);transform:translateY(-50%) rotate(-45deg)}
+.btn-leaf.off{opacity:0!important}
 
-/* ── FEEDBACK ── */
-.feedback {
-  border-radius: 6px; padding: 11px 16px; font-size: 0.96rem; min-height: 44px;
-  display: flex; align-items: center; justify-content: center; gap: 8px;
-  margin-bottom: 8px; opacity: 0; transition: opacity 0.25s;
-  font-family: 'Playfair Display', serif; font-style: italic;
+/* ══════════════════════════════════════
+   FEEDBACK — solid, always readable
+══════════════════════════════════════ */
+.feedback-bar{
+  border-radius:10px;margin-bottom:10px;
+  min-height:54px;display:flex;align-items:center;
+  padding:0 20px;gap:12px;
+  opacity:0;transition:opacity .3s;
 }
-.feedback.show { opacity: 1; }
-.feedback.correct { background: rgba(74,140,42,0.12); border: 1.5px solid var(--vine-mid); color: var(--vine-dark); }
-.feedback.wrong   { background: rgba(192,57,43,0.1);  border: 1.5px solid var(--wine-mid); color: var(--wine); }
+.feedback-bar.show{opacity:1}
+.feedback-bar.correct{background:#1a5c14;color:#fff}
+.feedback-bar.wrong  {background:#7a1515;color:#fff}
+.fb-icon{font-size:1.3rem;flex-shrink:0}
+.fb-msg{font-family:'Playfair Display',serif;font-style:italic;font-size:.96rem;line-height:1.45}
 
-.next-area { text-align: center; min-height: 44px; }
-.btn-next {
-  font-family: 'Playfair Display', serif; font-size: 0.88rem;
-  color: var(--cream); background: linear-gradient(135deg, var(--vine-dark), var(--vine-mid));
-  border: 2px solid var(--vine-dark); padding: 10px 34px; cursor: pointer;
-  border-radius: 6px; transition: all 0.2s; opacity: 0; pointer-events: none;
-}
-.btn-next.show { opacity: 1; pointer-events: all; }
-.btn-next:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(45,90,27,0.4); }
+.next-area{text-align:center;min-height:44px;margin-bottom:4px}
 
-/* ── MINI-GAME ── */
-#minigame { text-align: center; }
-.mg-inner { padding: 26px 24px 30px; }
-.mg-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--vine-dark); margin-bottom: 4px; }
-.mg-subtitle { color: var(--earth); font-size: 0.95rem; margin-bottom: 14px; }
-.mg-timer-row { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 12px; }
-.mg-timer { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--wine); font-weight: 700; min-width: 2.5rem; text-align: center; }
-.mg-score-live { font-size: 1.05rem; color: var(--vine-dark); font-weight: 700; }
-.grape-field {
-  position: relative; width: 100%; height: 260px;
-  background: linear-gradient(to bottom, #a8d878 0%, #6aaa38 50%, #4a8820 100%);
-  border-radius: 10px; overflow: hidden; border: 2px solid var(--vine-dark);
-  margin-bottom: 14px; cursor: crosshair;
-}
-.grape-field::before {
-  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
-  background: rgba(60,40,10,0.4); z-index: 1;
-}
-.grape-field::after {
-  content: ''; position: absolute; inset: 0;
-  background-image: repeating-linear-gradient(
-    to bottom, transparent 0, transparent 38px,
-    rgba(30,80,10,0.25) 38px, rgba(30,80,10,0.25) 40px
-  );
-}
-.grape-target {
-  position: absolute; font-size: 2.4rem; cursor: pointer; user-select: none;
-  z-index: 5; animation: grape-float 2.2s ease-in-out infinite;
-  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
-  transition: transform 0.1s;
-}
-.grape-target:hover { transform: scale(1.25) !important; }
-.grape-target.popped { pointer-events: none; animation: grape-pop 0.35s ease forwards; }
-@keyframes grape-float { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-12px) rotate(5deg)} }
-@keyframes grape-pop  { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.6);opacity:0.6} 100%{transform:scale(0);opacity:0} }
-.mg-instructions { font-style: italic; color: var(--text-mid); font-size: 0.9rem; }
+/* ══════════════════════════════════════
+   MINI-GAME
+══════════════════════════════════════ */
+#minigame{text-align:center}
+.mg-body{padding:30px 28px 34px}
+.mg-eyebrow{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--vine);margin-bottom:8px}
+.mg-title{font-family:'Playfair Display',serif;font-size:2rem;color:var(--text);margin-bottom:6px}
+.mg-sub{color:var(--text-mid);font-size:.92rem;margin-bottom:18px}
+.mg-meta{display:flex;justify-content:center;align-items:center;gap:18px;margin-bottom:12px}
+.mg-clock{font-family:'Playfair Display',serif;font-size:2.5rem;color:var(--wine);font-weight:700;min-width:3rem;text-align:center;line-height:1}
+.mg-pts{font-size:1rem;font-weight:700;color:var(--vine);background:rgba(45,90,27,.08);border:1px solid rgba(45,90,27,.22);border-radius:20px;padding:4px 18px}
 
-/* ── RESULTS ── */
-#results { text-align: center; }
-.results-inner { padding: 34px 28px; }
-.results-title { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--wine); margin-bottom: 6px; }
-.results-orn { color: var(--vine-mid); font-size: 1.3rem; letter-spacing: 10px; opacity: 0.5; margin-bottom: 4px; }
-.rank-icon { font-size: 68px; margin: 14px 0; animation: throb 2s ease-in-out infinite; }
-@keyframes throb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-.rank-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--vine-dark); margin-bottom: 5px; }
-.rank-desc { font-family: 'Playfair Display', serif; font-style: italic; color: var(--text-mid); font-size: 0.98rem; line-height: 1.65; margin-bottom: 20px; padding: 0 8px; }
-.stats-row { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; }
-.stat-box { text-align: center; }
-.stat-val { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--wine); }
-.stat-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--earth); margin-top: 2px; font-weight: 700; }
-hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16px 0; }
-.review-section { text-align: left; margin-bottom: 16px; }
-.review-heading { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--wine); margin-bottom: 10px; font-weight: 700; }
-.missed-item { background: rgba(192,57,43,0.06); border-left: 3px solid var(--wine-mid); padding: 8px 12px; margin-bottom: 7px; border-radius: 0 6px 6px 0; }
-.missed-q { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.86rem; color: var(--text-mid); margin-bottom: 3px; }
-.missed-a { font-size: 0.73rem; color: var(--vine-dark); font-weight: 700; }
+.grape-field{
+  position:relative;width:100%;height:240px;
+  background:linear-gradient(to bottom,#8fd460 0%,#5fa828 55%,#3a7818 100%);
+  border-radius:12px;overflow:hidden;border:2px solid #2d5a1b;
+  cursor:crosshair;margin-bottom:12px;
+}
+.grape-field::before{
+  content:'';position:absolute;inset:0;
+  background-image:repeating-linear-gradient(to bottom,transparent 0,transparent 36px,rgba(15,55,5,.2) 36px,rgba(15,55,5,.2) 38px);
+}
+.grape-target{
+  position:absolute;font-size:2.4rem;cursor:pointer;user-select:none;z-index:5;
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.22));
+  animation:gfloat 2.1s ease-in-out infinite;
+  transition:transform .1s;
+}
+.grape-target:hover{transform:scale(1.22)!important}
+.grape-target.popped{pointer-events:none;animation:gpop .32s ease forwards}
+@keyframes gfloat{0%,100%{transform:translateY(0) rotate(-5deg)}50%{transform:translateY(-10px) rotate(5deg)}}
+@keyframes gpop  {0%{transform:scale(1);opacity:1}55%{transform:scale(1.5);opacity:.5}100%{transform:scale(0);opacity:0}}
+.mg-hint{font-size:.84rem;color:var(--text-soft);font-style:italic}
+
+/* ══════════════════════════════════════
+   RESULTS
+══════════════════════════════════════ */
+#results{text-align:center}
+.results-body{padding:40px 36px}
+.results-title{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,4vw,2.1rem);color:var(--text);margin-bottom:6px}
+.results-orn{font-size:1.1rem;letter-spacing:10px;opacity:.38;margin-bottom:4px;color:var(--vine-lt)}
+.rank-icon{font-size:72px;margin:16px 0 10px;animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.07)}}
+.rank-name{font-family:'Playfair Display',serif;font-size:1.35rem;color:var(--wine);margin-bottom:6px}
+.rank-desc{font-family:'Playfair Display',serif;font-style:italic;color:var(--text-mid);font-size:.98rem;line-height:1.72;margin-bottom:24px;padding:0 12px}
+
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:24px}
+.stat-card{background:var(--cream-bg);border:1px solid var(--border);border-radius:10px;padding:16px 10px}
+.stat-val{font-family:'Playfair Display',serif;font-size:2rem;color:var(--wine)}
+.stat-lbl{font-size:.56rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-soft);margin-top:3px}
+
+.r-divider{border:none;border-top:1px solid rgba(139,90,48,.14);margin:20px 0}
+.review-section{text-align:left;margin-bottom:20px}
+.review-hd{font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:2px;color:var(--text-soft);margin-bottom:12px}
+.missed-item{background:rgba(192,57,43,.04);border-left:3px solid #c53030;padding:10px 14px;margin-bottom:8px;border-radius:0 8px 8px 0}
+.missed-q{font-family:'Playfair Display',serif;font-style:italic;font-size:.86rem;color:var(--text-mid);margin-bottom:4px}
+.missed-a{font-size:.7rem;color:var(--vine);font-weight:700}
 
 /* ── ANIMATIONS ── */
-@keyframes slideUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
-.slide-up { animation: slideUp 0.4s ease forwards; }
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
-.shake { animation: shake 0.4s ease; }
-@keyframes vineGlow { 0%{box-shadow:0 0 0 rgba(74,140,42,0)} 40%{box-shadow:0 0 28px rgba(74,140,42,0.5)} 100%{box-shadow:0 0 0 rgba(74,140,42,0)} }
-.vine-glow { animation: vineGlow 0.7s ease; }
+@keyframes slideUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.slide-up{animation:slideUp .4s ease forwards}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-8px)}75%{transform:translateX(8px)}}
+.shake{animation:shake .4s ease}
+@keyframes correctGlow{0%{box-shadow:0 0 0 0 rgba(39,102,46,.45)}100%{box-shadow:0 0 0 18px rgba(39,102,46,0)}}
+.correct-glow{animation:correctGlow .7s ease}
 
-#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+#confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:999}
 
-@media (max-width: 500px) {
-  #app { padding: 12px 52px 12px 12px; }
-  #rose-tracker { right: 3px; min-width: 34px; padding: 8px 4px; }
-  .rose-slot { font-size: 0.95rem; }
+@media(max-width:520px){
+  #app{padding:12px 74px 12px 12px}
+  #vine-tracker{width:60px}
+  .intro-body,.results-body{padding:28px 20px 32px}
+  .rules-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
-<div id="scene"></div>
 
-<!-- Rose tracker sidebar -->
-<div id="rose-tracker">
-  <div class="rt-label">Correct</div>
-  <div id="rose-slots"></div>
-  <hr class="rt-div">
-  <div class="rt-count" id="rt-count">0/25</div>
+<!-- Vineyard + Dark Overlay -->
+<div id="scene"></div>
+<div id="overlay"></div>
+
+<!-- SVG Rose Vine Tracker -->
+<div id="vine-tracker">
+  <div class="vt-lbl">Progress</div>
+  <div id="vine-svg-wrap">
+    <svg id="vine-svg" overflow="visible"></svg>
+  </div>
+  <div class="vt-count" id="vt-count">0/25</div>
 </div>
 
 <div id="app">
@@ -301,27 +308,35 @@ hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16p
   <!-- ════ INTRO ════ -->
   <div id="intro" class="screen active">
     <div class="panel">
-      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
-      <div class="intro-inner">
-        <div class="intro-deco">🍇</div>
-        <h1 class="game-title">The Vineyard at Messina</h1>
-        <p class="game-subtitle">A Much Ado About Nothing Quote Quiz</p>
+      <div class="intro-body">
+        <div class="eyebrow">🍇 Much Ado About Nothing</div>
+        <h1 class="intro-title">The Vineyard<br>at Messina</h1>
+        <p class="intro-sub">A Quote &amp; Speaker Study Game</p>
         <p class="intro-flavor">
-          The grapes of Messina hang heavy on the vine — but Don John has scattered leaves
-          across every speaker's words! Brush them away, name the voice, and harvest your way to glory.
+          Don John has scattered autumn leaves across the speakers' words.
+          Brush them aside, name the voice, and tend your vines —
+          for every correct answer, a new rose blooms on the garden wall.
         </p>
-        <div class="rules-box">
-          <h3>🌿 How to Play</h3>
-          <ul>
-            <li>A quote appears on the scroll — hover the answer cards to blow leaves away</li>
-            <li>Click the character who spoke those words</li>
-            <li>You have <strong>20 seconds</strong> per quote</li>
-            <li>3+ correct in a row earns streak bonus points 🌹</li>
-            <li>After every 5 questions: Grape Harvest mini-game!</li>
-            <li>All 25 quotes from your study guide are included</li>
-          </ul>
+        <div class="divider-ornament">🌹 &nbsp; 🍃 &nbsp; 🌹</div>
+        <div class="rules-grid">
+          <div class="rule-card">
+            <div class="rule-icon">🍃</div>
+            <div class="rule-body"><strong>Reveal</strong><span>Hover answer cards to blow leaves away, then click your answer</span></div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">⏱️</div>
+            <div class="rule-body"><strong>20 Seconds</strong><span>Each quote has a ticking timer — think fast!</span></div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">🔥</div>
+            <div class="rule-body"><strong>Streak Bonus</strong><span>3+ correct in a row earns extra points each round</span></div>
+          </div>
+          <div class="rule-card">
+            <div class="rule-icon">🍇</div>
+            <div class="rule-body"><strong>Grape Harvest</strong><span>Bonus mini-game after every 5 questions — click fast!</span></div>
+          </div>
         </div>
-        <button class="btn-wine" id="btn-start">Enter the Vineyard</button>
+        <button class="btn-primary" id="btn-start">Enter the Vineyard →</button>
       </div>
     </div>
   </div>
@@ -333,43 +348,46 @@ hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16p
         <span class="hud-lbl">Score</span>
         <span class="hud-val" id="hud-score">0</span>
       </div>
-      <div class="hud-center" id="hud-progress">Question 1 of 25</div>
-      <div class="hud-stat right">
+      <div class="hud-center" id="hud-q">Question 1 of 25</div>
+      <div class="hud-stat r">
         <span class="hud-lbl">Streak</span>
         <span class="hud-val" id="hud-streak">🔥 0</span>
       </div>
     </div>
-    <div class="bar-wrap"><div class="bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="bar-wrap"><div class="bar-fill" id="timer-fill" style="width:100%"></div></div>
+    <div class="bar-wrap"><div class="bar-fill" id="pbar" style="width:0%"></div></div>
+    <div class="bar-wrap"><div class="bar-fill" id="tbar" style="width:100%"></div></div>
 
     <div class="panel quote-card" id="quote-card">
-      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
-      <div class="act-tag" id="act-tag">Act 1, Scene 1</div>
-      <div class="vine-ornament">— 🍇 —</div>
-      <p class="quote-text" id="quote-text"></p>
-      <p class="who-prompt">Who spoke these words?</p>
+      <div class="act-pill" id="act-tag">Act 1, Scene 1</div>
+      <div class="q-mark">"</div>
+      <p class="q-text" id="q-text"></p>
+      <p class="q-who">— Who spoke these words?</p>
     </div>
 
     <div class="char-grid" id="char-grid"></div>
-    <div class="feedback" id="feedback"></div>
+
+    <div class="feedback-bar" id="feedback">
+      <span class="fb-icon" id="fb-icon"></span>
+      <span class="fb-msg" id="fb-msg"></span>
+    </div>
     <div class="next-area">
-      <button class="btn-next" id="btn-next">Next Quote →</button>
+      <button class="btn-continue" id="btn-next">Continue →</button>
     </div>
   </div>
 
   <!-- ════ MINI-GAME ════ -->
   <div id="minigame" class="screen">
     <div class="panel">
-      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
-      <div class="mg-inner">
+      <div class="mg-body">
+        <div class="mg-eyebrow">🌿 Bonus Round</div>
         <div class="mg-title">🍇 Grape Harvest!</div>
-        <div class="mg-subtitle">Click every grape before time runs out — each one earns bonus points!</div>
-        <div class="mg-timer-row">
-          <div class="mg-timer" id="mg-timer">6</div>
-          <div class="mg-score-live" id="mg-live">+0 bonus pts</div>
+        <div class="mg-sub">Click every bunch before time runs out — move quickly!</div>
+        <div class="mg-meta">
+          <div class="mg-clock" id="mg-clock">6</div>
+          <div class="mg-pts" id="mg-pts">+0 pts</div>
         </div>
         <div class="grape-field" id="grape-field"></div>
-        <div class="mg-instructions">🍇 = +3 points &nbsp;|&nbsp; Move fast — they're ripe!</div>
+        <div class="mg-hint">Each 🍇 = +3 bonus points</div>
       </div>
     </div>
   </div>
@@ -377,25 +395,25 @@ hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16p
   <!-- ════ RESULTS ════ -->
   <div id="results" class="screen">
     <div class="panel slide-up">
-      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
-      <div class="results-inner">
-        <h2 class="results-title">The Harvest Is In</h2>
+      <div class="results-body">
+        <div class="eyebrow">🌹 The Harvest Is In</div>
+        <h2 class="results-title">Your Final Verdict</h2>
         <div class="results-orn">— 🌹 🍇 🌹 —</div>
         <div class="rank-icon" id="rank-icon">🏆</div>
-        <div class="rank-name" id="rank-name">Master Vintner</div>
+        <div class="rank-name" id="rank-name"></div>
         <div class="rank-desc" id="rank-desc"></div>
-        <div class="stats-row">
-          <div class="stat-box"><div class="stat-val" id="stat-score">0</div><div class="stat-lbl">Score</div></div>
-          <div class="stat-box"><div class="stat-val" id="stat-correct">0/25</div><div class="stat-lbl">Correct</div></div>
-          <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">Best Streak</div></div>
+        <div class="stats-grid">
+          <div class="stat-card"><div class="stat-val" id="s-score">0</div><div class="stat-lbl">Score</div></div>
+          <div class="stat-card"><div class="stat-val" id="s-correct">0/25</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-card"><div class="stat-val" id="s-streak">0</div><div class="stat-lbl">Best Streak</div></div>
         </div>
-        <hr class="rdiv">
+        <hr class="r-divider">
         <div id="review-section" class="review-section" style="display:none">
-          <div class="review-heading">Quotes to Study</div>
+          <div class="review-hd">Quotes to Revisit</div>
           <div id="review-list"></div>
-          <hr class="rdiv">
+          <hr class="r-divider">
         </div>
-        <button class="btn-wine" id="btn-again">Play Again</button>
+        <button class="btn-primary" id="btn-again">Play Again</button>
       </div>
     </div>
   </div>
@@ -403,343 +421,398 @@ hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16p
 </div><!-- #app -->
 
 <script>
-// ── DATA ──────────────────────────────────────────────
-const QUOTES = [
-  { text: '"There\'s a skirmish of wit between them."', speaker: 'Leonato', act: 'Act 1, Scene 1' },
-  { text: '"God help the noble Claudio! If he have caught the Benedick, it will cost him a thousand pound ere he be cured."', speaker: 'Beatrice', act: 'Act 1, Scene 1' },
-  { text: '"I had rather hear my dog bark at a crow, than a man swear he loves me."', speaker: 'Beatrice', act: 'Act 1, Scene 1' },
-  { text: '"I will assume thy part in some disguise / And tell fair Hero I am Claudio, / And in her bosom I\'ll unclasp my heart / And take her hearing prisoner with the force / And strong encounter of my amorous tale."', speaker: 'Don Pedro', act: 'Act 1, Scene 1' },
-  { text: '"This may prove food to my displeasure. That young start-up hath all the glory of my overthrow. If I can cross him any way, I bless myself every way."', speaker: 'Don John', act: 'Act 1, Scene 3' },
-  { text: '"Let me be that I am and seek not to alter me."', speaker: 'Don John', act: 'Act 1, Scene 3' },
-  { text: '"He that hath a beard is more than a youth, and he that hath no beard is less than a man: and he that is more than a youth is not for me, and he that is less than a man, I am not for him."', speaker: 'Beatrice', act: 'Act 2, Scene 1' },
-  { text: '"Yes, faith, it is [my cousin\'s] duty to make curtsy and say, \'Father as it please you.\' But yet for all that, [cousin], let him be a handsome fellow, or else make another curtsy and say, \'Father, as it please me.\'"', speaker: 'Beatrice', act: 'Act 2, Scene 1' },
-  { text: '"I will in the interim undertake one of Hercules\' labors, which is to bring Signior Benedick and the Lady Beatrice into a mountain of affection, th\' one with th\' other."', speaker: 'Don Pedro', act: 'Act 2, Scene 1' },
-  { text: '"\'Tis certain so, the Prince woos for himself. / Friendship is constant in all other things / Save in the office and affairs of love. / Therefore all hearts in love use their own tongues. / Let every eye negotiate for itself / And trust no agent."', speaker: 'Claudio', act: 'Act 2, Scene 1' },
-  { text: '"They say the lady is fair. \'Tis a truth, I can bear them witness. And virtuous—\'tis so, I cannot reprove it. And wise, but for loving me. By my troth, it is no addition to her wit—nor no great argument of her folly, for I will be horribly in love with her."', speaker: 'Benedick', act: 'Act 2, Scene 3' },
-  { text: '"When I said I would die a bachelor, I did not think I should live till I were married."', speaker: 'Benedick', act: 'Act 2, Scene 3' },
-  { text: '"Some Cupid kills with arrows, some with traps."', speaker: 'Hero', act: 'Act 3, Scene 1' },
-  { text: '"Stand I condemned for pride and scorn so much? / Contempt, farewell, and maiden pride, adieu!"', speaker: 'Beatrice', act: 'Act 3, Scene 1' },
-  { text: '"If I see anything tonight why I should not marry her, tomorrow in the congregation, where I should wed, there will I shame her."', speaker: 'Claudio', act: 'Act 3, Scene 2' },
-  { text: '"God give me joy to wear it, for my heart is exceeding heavy."', speaker: 'Hero', act: 'Act 3, Scene 4' },
-  { text: '"There, Leonato, take her back again. Give not this rotten orange to your friend. She\'s but the sign and semblance of her honor. O, what authority and show of truth can cunning sin cover itself withal!"', speaker: 'Claudio', act: 'Act 4, Scene 1' },
-  { text: '"Your daughter here the princes left for dead. / Let her awhile be secretly kept in, / And publish it that she is dead indeed."', speaker: 'Friar Francis', act: 'Act 4, Scene 1' },
-  { text: '"O God, that I were a man! I would eat his heart in the marketplace."', speaker: 'Beatrice', act: 'Act 4, Scene 1' },
-  { text: '"I love you with so much of my heart that none is left to protest."', speaker: 'Beatrice', act: 'Act 4, Scene 1' },
-  { text: '"O Hero! What a Hero hadst thou been / If half thy outward graces had been placed / About thy thoughts and counsels of thy heart! / But fare thee well, most foul, most fair, farewell / Thou pure impiety and impious purity."', speaker: 'Claudio', act: 'Act 4, Scene 1' },
-  { text: '"Thou hast killed my child. / If thou kill\'st me, boy, thou shalt kill a man."', speaker: 'Leonato', act: 'Act 5, Scene 1' },
-  { text: '"And since you could not be my son-in-law, / Be yet my nephew. My brother hath a daughter, / Almost the copy of my child that\'s dead, / And she alone is heir to both of us."', speaker: 'Leonato', act: 'Act 5, Scene 1' },
-  { text: '"For which of my bad parts didst thou first fall in love with me?"', speaker: 'Benedick', act: 'Act 5, Scene 2' },
-  { text: '"Thou and I are too wise to woo peaceably."', speaker: 'Benedick', act: 'Act 5, Scene 2' },
+// ─── DATA ──────────────────────────────────────────────
+const QUOTES=[
+  {text:'"There\'s a skirmish of wit between them."',speaker:'Leonato',act:'Act 1, Scene 1'},
+  {text:'"God help the noble Claudio! If he have caught the Benedick, it will cost him a thousand pound ere he be cured."',speaker:'Beatrice',act:'Act 1, Scene 1'},
+  {text:'"I had rather hear my dog bark at a crow, than a man swear he loves me."',speaker:'Beatrice',act:'Act 1, Scene 1'},
+  {text:'"I will assume thy part in some disguise / And tell fair Hero I am Claudio, / And in her bosom I\'ll unclasp my heart / And take her hearing prisoner with the force / And strong encounter of my amorous tale."',speaker:'Don Pedro',act:'Act 1, Scene 1'},
+  {text:'"This may prove food to my displeasure. That young start-up hath all the glory of my overthrow. If I can cross him any way, I bless myself every way."',speaker:'Don John',act:'Act 1, Scene 3'},
+  {text:'"Let me be that I am and seek not to alter me."',speaker:'Don John',act:'Act 1, Scene 3'},
+  {text:'"He that hath a beard is more than a youth, and he that hath no beard is less than a man: and he that is more than a youth is not for me, and he that is less than a man, I am not for him."',speaker:'Beatrice',act:'Act 2, Scene 1'},
+  {text:'"Yes, faith, it is [my cousin\'s] duty to make curtsy and say, \'Father as it please you.\' But yet for all that, [cousin], let him be a handsome fellow, or else make another curtsy and say, \'Father, as it please me.\'"',speaker:'Beatrice',act:'Act 2, Scene 1'},
+  {text:'"I will in the interim undertake one of Hercules\' labors, which is to bring Signior Benedick and the Lady Beatrice into a mountain of affection, th\' one with th\' other."',speaker:'Don Pedro',act:'Act 2, Scene 1'},
+  {text:'"\'Tis certain so, the Prince woos for himself. / Friendship is constant in all other things / Save in the office and affairs of love. / Therefore all hearts in love use their own tongues. / Let every eye negotiate for itself / And trust no agent."',speaker:'Claudio',act:'Act 2, Scene 1'},
+  {text:'"They say the lady is fair. \'Tis a truth, I can bear them witness. And virtuous—\'tis so, I cannot reprove it. And wise, but for loving me. By my troth, it is no addition to her wit—nor no great argument of her folly, for I will be horribly in love with her."',speaker:'Benedick',act:'Act 2, Scene 3'},
+  {text:'"When I said I would die a bachelor, I did not think I should live till I were married."',speaker:'Benedick',act:'Act 2, Scene 3'},
+  {text:'"Some Cupid kills with arrows, some with traps."',speaker:'Hero',act:'Act 3, Scene 1'},
+  {text:'"Stand I condemned for pride and scorn so much? / Contempt, farewell, and maiden pride, adieu!"',speaker:'Beatrice',act:'Act 3, Scene 1'},
+  {text:'"If I see anything tonight why I should not marry her, tomorrow in the congregation, where I should wed, there will I shame her."',speaker:'Claudio',act:'Act 3, Scene 2'},
+  {text:'"God give me joy to wear it, for my heart is exceeding heavy."',speaker:'Hero',act:'Act 3, Scene 4'},
+  {text:'"There, Leonato, take her back again. Give not this rotten orange to your friend. She\'s but the sign and semblance of her honor."',speaker:'Claudio',act:'Act 4, Scene 1'},
+  {text:'"Your daughter here the princes left for dead. / Let her awhile be secretly kept in, / And publish it that she is dead indeed."',speaker:'Friar Francis',act:'Act 4, Scene 1'},
+  {text:'"O God, that I were a man! I would eat his heart in the marketplace."',speaker:'Beatrice',act:'Act 4, Scene 1'},
+  {text:'"I love you with so much of my heart that none is left to protest."',speaker:'Beatrice',act:'Act 4, Scene 1'},
+  {text:'"O Hero! What a Hero hadst thou been / If half thy outward graces had been placed / About thy thoughts and counsels of thy heart! / But fare thee well, most foul, most fair, farewell / Thou pure impiety and impious purity."',speaker:'Claudio',act:'Act 4, Scene 1'},
+  {text:'"Thou hast killed my child. / If thou kill\'st me, boy, thou shalt kill a man."',speaker:'Leonato',act:'Act 5, Scene 1'},
+  {text:'"And since you could not be my son-in-law, / Be yet my nephew. My brother hath a daughter, / Almost the copy of my child that\'s dead, / And she alone is heir to both of us."',speaker:'Leonato',act:'Act 5, Scene 1'},
+  {text:'"For which of my bad parts didst thou first fall in love with me?"',speaker:'Benedick',act:'Act 5, Scene 2'},
+  {text:'"Thou and I are too wise to woo peaceably."',speaker:'Benedick',act:'Act 5, Scene 2'},
 ];
 
-const CHARACTERS = [
-  { name: 'Beatrice',      emoji: '🌹', color: '#c0392b', bg: 'rgba(192,57,43,.14)'  },
-  { name: 'Benedick',      emoji: '⚔️', color: '#2471a3', bg: 'rgba(36,113,163,.14)' },
-  { name: 'Claudio',       emoji: '🌿', color: '#1e8449', bg: 'rgba(30,132,73,.14)'  },
-  { name: 'Don Pedro',     emoji: '👑', color: '#7d3c98', bg: 'rgba(125,60,152,.14)' },
-  { name: 'Don John',      emoji: '🗡️', color: '#616a6b', bg: 'rgba(97,106,107,.14)' },
-  { name: 'Hero',          emoji: '🌸', color: '#c0166b', bg: 'rgba(192,22,107,.14)' },
-  { name: 'Leonato',       emoji: '🏛️', color: '#b7950b', bg: 'rgba(183,149,11,.14)' },
-  { name: 'Friar Francis', emoji: '✝️', color: '#808b96', bg: 'rgba(128,139,150,.14)'},
+const CHARS=[
+  {name:'Beatrice',     emoji:'🌹',color:'#c0392b',bg:'rgba(192,57,43,.1)'},
+  {name:'Benedick',     emoji:'⚔️',color:'#1a6fa3',bg:'rgba(26,111,163,.1)'},
+  {name:'Claudio',      emoji:'🌿',color:'#1a7a40',bg:'rgba(26,122,64,.1)'},
+  {name:'Don Pedro',    emoji:'👑',color:'#6c3691',bg:'rgba(108,54,145,.1)'},
+  {name:'Don John',     emoji:'🗡️',color:'#505a5e',bg:'rgba(80,90,94,.1)'},
+  {name:'Hero',         emoji:'🌸',color:'#b01270',bg:'rgba(176,18,112,.1)'},
+  {name:'Leonato',      emoji:'🏛️',color:'#9a7a08',bg:'rgba(154,122,8,.1)'},
+  {name:'Friar Francis',emoji:'✝️',color:'#6a7880',bg:'rgba(106,120,128,.1)'},
 ];
 
-const LEAF_COLORS = ['#4a8c2a','#2d5a1b','#8bc34a','#c8b040','#d4884a','#c07030','#6aaa38'];
-const SCATTER = [
-  { x:-90, y:-70, r:130  },
-  { x: 80, y:-90, r:-155 },
-  { x:-60, y: 80, r:200  },
-  { x:100, y: 60, r:-90  },
-  { x: 20, y:-110,r:80   },
+const LEAF_COLORS=['#4a8c2a','#2d5a1b','#8bc34a','#c8b030','#d4843a','#bf6f20','#5aaa30'];
+const SCATTER=[
+  {x:-95,y:-65,r:125},{x:85,y:-85,r:-150},
+  {x:-55,y:85,r:195},{x:105,y:55,r:-85},{x:15,y:-115,r:75},
 ];
-const HIT = [
+const HIT_MSGS=[
   '🌹 Well spoken! Thou knowest thy play!',
   '🍇 Magnifico! Even Benedick would applaud!',
   '🌿 By my troth — a true scholar of Messina!',
   '☀️ Right as the Sicilian sun! Bellissimo!',
   '🎭 Thou hast unmasked the speaker!',
   '🌸 Hero herself smiles upon thee!',
-  '🍇 The vineyard sings thy name!',
 ];
-const MISS = [
+const MISS_MSGS=[
   'Alas! Thou hast been deceived, as Claudio was.',
-  'Nay — Don John himself could not have done worse.',
   'Zounds! Even Dogberry might have known that one.',
+  'Nay — Don John himself could not have done worse.',
   'By my sword, thou art quite mistaken!',
   'Methinks thou needest more study in Messina.',
 ];
 
-// ── STATE ─────────────────────────────────────────────
-let deck=[], qIdx=0, score=0, streak=0, bestStreak=0;
-let correctCount=0, answered=false, missedQuotes=[];
-let timerInterval=null, timeLeft=20, mgTimerInt=null;
+// ─── STATE ─────────────────────────────────────────────
+let deck=[],qIdx=0,score=0,streak=0,bestStreak=0;
+let correctCount=0,answered=false,missedQuotes=[];
+let timerInt=null,timeLeft=20,mgInt=null;
 
-// ── HELPERS ───────────────────────────────────────────
-const $  = id => document.getElementById(id);
-const rnd= arr => arr[Math.floor(Math.random()*arr.length)];
-function shuffle(arr){
-  const a=[...arr];
-  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
-  return a;
-}
-function showScreen(id){
-  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
-  $(id).classList.add('active');
-}
+// ─── HELPERS ───────────────────────────────────────────
+const $=id=>document.getElementById(id);
+const rnd=a=>a[Math.floor(Math.random()*a.length)];
+function shuffle(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]]}return b}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));$(id).classList.add('active')}
 
-// ── ROSE TRACKER ──────────────────────────────────────
-function buildTracker(){
-  const c=$('rose-slots'); c.innerHTML='';
-  for(let i=0;i<25;i++){
-    const d=document.createElement('div');
-    d.className='rose-slot'; d.id='rs-'+i;
-    d.textContent=(i%5===4)?'🌹':'🍃';
-    c.appendChild(d);
+// ─── SVG VINE TRACKER ──────────────────────────────────
+const VW=46,VH=300;
+// Vine path: gentle S-curve from bottom (y=VH-4) to top (y=4)
+const VINE_D=`M${VW/2} ${VH-4} C${VW/2-14} ${VH-48} ${VW/2+14} ${VH-98} ${VW/2} ${VH-148} C${VW/2-14} ${VH-198} ${VW/2+14} ${VH-248} ${VW/2} 4`;
+// Rose Y positions (milestone 5,10,15,20,25 → bottom to top)
+const ROSE_Y=[VH-58,VH-118,VH-178,VH-238,8];
+const ROSE_X=[VW/2+4,VW/2-4,VW/2+5,VW/2-5,VW/2];
+let vinePathLength=0;
+
+function buildVine(){
+  const svg=$('vine-svg');
+  svg.setAttribute('viewBox',`0 0 ${VW} ${VH}`);
+  svg.setAttribute('width',VW);
+  svg.setAttribute('height',VH);
+  svg.innerHTML='';
+
+  // Small leaf clusters along the faded bg vine
+  function mkLeafCluster(px,py,flip){
+    const g=svgEl('g',{transform:`translate(${px},${py})`});
+    const leaf=svgEl('ellipse',{cx:0,cy:0,rx:6,ry:3,fill:'rgba(45,90,27,0.22)',transform:`rotate(${flip?30:-30})`});
+    g.appendChild(leaf);
+    return g;
   }
-}
-function updateTracker(){
-  for(let i=0;i<25;i++){
-    const el=$('rs-'+i);
-    if(el) el.classList.toggle('bloomed', i<correctCount);
-  }
-  $('rt-count').textContent=correctCount+'/25';
+
+  // Faded background vine
+  const bgPath=svgEl('path',{d:VINE_D,stroke:'rgba(45,90,27,0.15)','stroke-width':3,fill:'none','stroke-linecap':'round'});
+  svg.appendChild(bgPath);
+
+  // Background leaf clusters
+  svg.appendChild(mkLeafCluster(VW/2-10,VH-90,false));
+  svg.appendChild(mkLeafCluster(VW/2+10,VH-160,true));
+  svg.appendChild(mkLeafCluster(VW/2-8, VH-230,false));
+
+  // Active growing vine
+  const activePath=svgEl('path',{id:'active-vine',d:VINE_D,stroke:'#2d5a1b','stroke-width':3,fill:'none','stroke-linecap':'round'});
+  svg.appendChild(activePath);
+
+  // Measure path length
+  svg.appendChild(activePath);
+  vinePathLength=activePath.getTotalLength?activePath.getTotalLength():VH-8;
+  activePath.style.strokeDasharray=vinePathLength;
+  activePath.style.strokeDashoffset=vinePathLength;
+  activePath.style.transition='stroke-dashoffset .9s ease';
+
+  // Build roses
+  ROSE_Y.forEach((ry,i)=>{
+    const milestone=(i+1)*5;
+    const rx=ROSE_X[i];
+
+    // Outer group positions the rose on the vine
+    const outer=svgEl('g',{transform:`translate(${rx},${ry})`});
+    // Inner group: we scale this for bloom animation
+    const inner=svgEl('g',{id:`rose-${milestone}`});
+    inner.style.transform='scale(0)';
+    inner.style.transition='transform .65s cubic-bezier(.2,1.5,.4,1)';
+
+    // 6 petals
+    const petalColors=['#c0392b','#e74c3c'];
+    for(let p=0;p<6;p++){
+      const petal=svgEl('ellipse',{cx:0,cy:-7,rx:3.5,ry:6.5,fill:petalColors[p%2],transform:`rotate(${p*60})`,'fill-opacity':.92});
+      inner.appendChild(petal);
+    }
+    // Center
+    inner.appendChild(svgEl('circle',{r:3.8,fill:'#f9c82a'}));
+    // Leaves on stem
+    inner.appendChild(svgEl('ellipse',{cx:-9,cy:5,rx:5.5,ry:2.5,fill:'#2d7a1b',transform:'rotate(-28,-9,5)'}));
+    inner.appendChild(svgEl('ellipse',{cx:9, cy:5,rx:5.5,ry:2.5,fill:'#2d7a1b',transform:'rotate(28,9,5)'}));
+
+    outer.appendChild(inner);
+    svg.appendChild(outer);
+  });
 }
 
-// ── LEAF MECHANICS ────────────────────────────────────
+function svgEl(tag,attrs){
+  const el=document.createElementNS('http://www.w3.org/2000/svg',tag);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  return el;
+}
+
+function updateVine(){
+  const pct=correctCount/25;
+  const av=$('active-vine');
+  if(av) av.style.strokeDashoffset=vinePathLength*(1-pct);
+
+  // Bloom roses
+  [5,10,15,20,25].forEach(m=>{
+    const r=$(`rose-${m}`);
+    if(r) r.style.transform=correctCount>=m?'scale(1)':'scale(0)';
+  });
+  $('vt-count').textContent=correctCount+'/25';
+}
+
+// ─── LEAVES ON BUTTONS ─────────────────────────────────
 function addLeaves(btn){
   btn.querySelectorAll('.btn-leaf').forEach(l=>l.remove());
+  // Leaves at corners/edges only — center (portrait/name) always visible
   const positions=[
-    {top:'10%',left:'8%', w:22,h:28},
-    {top:'14%',left:'62%',w:19,h:25},
-    {top:'55%',left:'18%',w:25,h:21},
-    {top:'58%',left:'66%',w:21,h:27},
-    {top:'34%',left:'40%',w:17,h:23},
+    {top:'6%', left:'4%', w:20,h:26},
+    {top:'8%', left:'68%',w:17,h:22},
+    {top:'62%',left:'10%',w:22,h:18},
+    {top:'60%',left:'72%',w:18,h:24},
+    {top:'30%',left:'44%',w:15,h:20},
   ];
-  positions.forEach((pos,i)=>{
+  positions.forEach((p,i)=>{
     const leaf=document.createElement('div');
     leaf.className='btn-leaf';
     const color=LEAF_COLORS[Math.floor(Math.random()*LEAF_COLORS.length)];
-    const rot=(Math.random()*120-60)+'deg';
-    leaf.style.cssText=`top:${pos.top};left:${pos.left};width:${pos.w}px;height:${pos.h}px;background:${color};transform:rotate(${rot});`;
+    leaf.style.cssText=`top:${p.top};left:${p.left};width:${p.w}px;height:${p.h}px;background:${color};transform:rotate(${(Math.random()*100-50).toFixed(0)}deg)`;
     btn.appendChild(leaf);
   });
   btn.addEventListener('mouseenter',()=>{
     btn.querySelectorAll('.btn-leaf').forEach((leaf,i)=>{
       const sc=SCATTER[i]||SCATTER[0];
       leaf.style.transform=`translate(${sc.x}px,${sc.y}px) rotate(${sc.r}deg)`;
-      leaf.classList.add('scatter');
+      leaf.classList.add('off');
     });
   });
 }
 
-// ── GAME ──────────────────────────────────────────────
+// ─── GAME FLOW ─────────────────────────────────────────
 function startGame(){
   deck=shuffle(QUOTES);
   qIdx=0;score=0;streak=0;bestStreak=0;correctCount=0;missedQuotes=[];
-  buildTracker();updateTracker();
-  showScreen('game');loadQuestion();
+  updateVine();
+  showScreen('game');
+  loadQuestion();
 }
 
 function loadQuestion(){
-  if(qIdx>=deck.length){showResults();return;}
+  if(qIdx>=deck.length){showResults();return}
   answered=false;
   const q=deck[qIdx];
   $('hud-score').textContent=score;
-  $('hud-progress').textContent=`Question ${qIdx+1} of ${deck.length}`;
+  $('hud-q').textContent=`Question ${qIdx+1} of ${deck.length}`;
   $('hud-streak').textContent=`🔥 ${streak}`;
-  $('progress-fill').style.width=((qIdx/deck.length)*100)+'%';
+  $('pbar').style.width=((qIdx/deck.length)*100)+'%';
   $('act-tag').textContent=q.act;
-  $('quote-text').textContent=q.text;
+  $('q-text').textContent=q.text;
 
-  const fb=$('feedback'); fb.className='feedback'; fb.textContent='';
-  const nb=$('btn-next'); nb.classList.remove('show');
-  nb.textContent=(qIdx>=deck.length-1)?'See Results →':'Next Quote →';
+  // Reset feedback + next
+  const fb=$('feedback');fb.className='feedback-bar';
+  $('fb-icon').textContent='';$('fb-msg').textContent='';
+  const nb=$('btn-next');nb.classList.remove('show');
+  nb.textContent=qIdx>=deck.length-1?'See Results →':'Continue →';
 
-  const correct=CHARACTERS.find(c=>c.name===q.speaker);
-  const options=shuffle([correct,...shuffle(CHARACTERS.filter(c=>c.name!==q.speaker)).slice(0,3)]);
-
-  const grid=$('char-grid'); grid.innerHTML='';
-  options.forEach(char=>{
+  // Build options
+  const correct=CHARS.find(c=>c.name===q.speaker);
+  const options=shuffle([correct,...shuffle(CHARS.filter(c=>c.name!==q.speaker)).slice(0,3)]);
+  const grid=$('char-grid');grid.innerHTML='';
+  options.forEach(ch=>{
     const btn=document.createElement('button');
     btn.className='char-btn';
-    btn.style.borderColor=char.color; btn.style.background=char.bg;
-    btn.dataset.name=char.name;
-    btn.innerHTML=`<div class="char-portrait" style="border-color:${char.color};background:${char.bg};">${char.emoji}</div><div class="char-name">${char.name}</div>`;
+    btn.style.borderLeftColor=ch.color;
+    btn.dataset.name=ch.name;
+    btn.innerHTML=`<div class="char-portrait" style="border-color:${ch.color};background:${ch.bg}">${ch.emoji}</div><div class="char-name">${ch.name}</div>`;
     addLeaves(btn);
-    btn.addEventListener('click',()=>choose(char.name,q.speaker,btn));
+    btn.addEventListener('click',()=>choose(ch.name,q.speaker,btn));
     grid.appendChild(btn);
   });
   startTimer();
 }
 
 function startTimer(){
-  clearInterval(timerInterval); timeLeft=20;
-  const bar=$('timer-fill');
-  bar.style.transition='none'; bar.style.width='100%';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{ bar.style.transition='width 1s linear'; }));
-  timerInterval=setInterval(()=>{
+  clearInterval(timerInt);timeLeft=20;
+  const bar=$('tbar');
+  bar.style.transition='none';bar.style.width='100%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{bar.style.transition='width 1s linear'}));
+  timerInt=setInterval(()=>{
     timeLeft--;
     bar.style.width=Math.max(0,(timeLeft/20)*100)+'%';
-    if(timeLeft<=0){clearInterval(timerInterval);if(!answered)timeUp();}
+    if(timeLeft<=0){clearInterval(timerInt);if(!answered)timeUp()}
   },1000);
 }
 
 function timeUp(){
-  answered=true; streak=0; $('hud-streak').textContent='🔥 0';
-  const q=deck[qIdx]; missedQuotes.push(q);
-  showFeedback(false,`⏰ Time's up! The speaker was ${q.speaker}.`);
-  highlightCorrect(q.speaker); disableButtons(); $('btn-next').classList.add('show');
+  answered=true;streak=0;$('hud-streak').textContent='🔥 0';
+  const q=deck[qIdx];missedQuotes.push(q);
+  showFeedback(false,'⏰',`Time's up! The speaker was ${q.speaker}.`);
+  highlightCorrect(q.speaker);disableAll();showNext();
 }
 
-function choose(selected,correct,btn){
+function choose(sel,correct,btn){
   if(answered)return;
-  answered=true; clearInterval(timerInterval);
-  const ok=selected===correct;
+  answered=true;clearInterval(timerInt);
+  const ok=sel===correct;
   if(ok){
-    streak++; correctCount++;
+    streak++;correctCount++;
     if(streak>bestStreak)bestStreak=streak;
     const bonus=streak>=3?Math.floor(streak/3)*5:0;
     score+=10+bonus;
-    $('hud-score').textContent=score; $('hud-streak').textContent=`🔥 ${streak}`;
-    btn.style.background='rgba(74,140,42,.28)'; btn.style.borderColor='#2d6b1a'; btn.style.boxShadow='0 0 16px rgba(74,140,42,.5)';
-    const card=$('quote-card');
-    card.classList.add('vine-glow');
-    card.addEventListener('animationend',()=>card.classList.remove('vine-glow'),{once:true});
-    showFeedback(true,rnd(HIT)+(bonus?` +${bonus} streak bonus!`:''));
-    updateTracker();
+    $('hud-score').textContent=score;$('hud-streak').textContent=`🔥 ${streak}`;
+    btn.classList.add('st-correct');
+    $('quote-card').classList.add('correct-glow');
+    $('quote-card').addEventListener('animationend',()=>$('quote-card').classList.remove('correct-glow'),{once:true});
+    showFeedback(true,'✅',rnd(HIT_MSGS)+(bonus?` — +${bonus} streak bonus!`:''));
+    updateVine();
   } else {
-    streak=0; $('hud-streak').textContent='🔥 0'; missedQuotes.push(deck[qIdx]);
-    btn.style.background='rgba(192,57,43,.2)'; btn.style.borderColor='#c0392b';
-    const card=$('quote-card');
-    card.classList.add('shake');
-    card.addEventListener('animationend',()=>card.classList.remove('shake'),{once:true});
-    showFeedback(false,rnd(MISS)+' The speaker was '+correct+'.');
+    streak=0;$('hud-streak').textContent='🔥 0';missedQuotes.push(deck[qIdx]);
+    btn.classList.add('st-wrong');
+    $('quote-card').classList.add('shake');
+    $('quote-card').addEventListener('animationend',()=>$('quote-card').classList.remove('shake'),{once:true});
+    showFeedback(false,'❌',rnd(MISS_MSGS)+` The speaker was ${correct}.`);
     highlightCorrect(correct);
   }
-  disableButtons(); $('btn-next').classList.add('show');
+  disableAll();showNext();
 }
 
 function highlightCorrect(name){
-  document.querySelectorAll('.char-btn').forEach(b=>{
-    if(b.dataset.name===name){b.style.background='rgba(74,140,42,.28)';b.style.borderColor='#2d6b1a';}
-  });
+  document.querySelectorAll('.char-btn').forEach(b=>{if(b.dataset.name===name)b.classList.add('st-correct')});
 }
-function disableButtons(){
+function disableAll(){
   document.querySelectorAll('.char-btn').forEach(b=>{
     b.disabled=true;
-    b.querySelectorAll('.btn-leaf').forEach((leaf,i)=>{
+    b.querySelectorAll('.btn-leaf').forEach((l,i)=>{
       const sc=SCATTER[i]||SCATTER[0];
-      leaf.style.transform=`translate(${sc.x}px,${sc.y}px) rotate(${sc.r}deg)`;
-      leaf.classList.add('scatter');
+      l.style.transform=`translate(${sc.x}px,${sc.y}px) rotate(${sc.r}deg)`;
+      l.classList.add('off');
     });
   });
 }
-function showFeedback(ok,msg){
+function showNext(){$('btn-next').classList.add('show')}
+function showFeedback(ok,icon,msg){
   const fb=$('feedback');
-  fb.className=`feedback ${ok?'correct':'wrong'} show`;
-  fb.textContent=msg;
+  fb.className=`feedback-bar ${ok?'correct':'wrong'} show`;
+  $('fb-icon').textContent=icon;$('fb-msg').textContent=msg;
 }
 
 function nextQuestion(){
   qIdx++;
-  if(qIdx>0 && qIdx%5===0 && qIdx<deck.length){ showMiniGame(); }
-  else { loadQuestion(); }
+  if(qIdx>0&&qIdx%5===0&&qIdx<deck.length)showMiniGame();
+  else loadQuestion();
 }
 
-// ── GRAPE HARVEST ─────────────────────────────────────
+// ─── GRAPE HARVEST ─────────────────────────────────────
 function showMiniGame(){
-  showScreen('minigame');
-  clearInterval(mgTimerInt);
-  const field=$('grape-field'); field.innerHTML='';
-  let bonus=0, t=6;
-  $('mg-timer').textContent=t; $('mg-live').textContent='+0 bonus pts';
+  showScreen('minigame');clearInterval(mgInt);
+  const field=$('grape-field');field.innerHTML='';
+  let bonus=0,t=6;
+  $('mg-clock').textContent=t;$('mg-pts').textContent='+0 pts';
 
-  // Spawn grapes
   for(let i=0;i<12;i++){
     const el=document.createElement('div');
-    el.className='grape-target'; el.textContent='🍇';
-    el.style.left=(4+Math.random()*84)+'%';
-    el.style.top=(4+Math.random()*72)+'%';
+    el.className='grape-target';el.textContent='🍇';
+    el.style.left=(4+Math.random()*83)+'%';
+    el.style.top=(4+Math.random()*70)+'%';
     el.style.animationDelay=(Math.random()*1.8)+'s';
     el.addEventListener('click',function(){
       if(this.classList.contains('popped'))return;
       this.classList.add('popped');
-      bonus+=3; score+=3;
-      $('mg-live').textContent=`+${bonus} bonus pts`;
+      bonus+=3;score+=3;
+      $('mg-pts').textContent=`+${bonus} pts`;
       $('hud-score').textContent=score;
     });
     field.appendChild(el);
   }
 
-  mgTimerInt=setInterval(()=>{
-    t--;
-    $('mg-timer').textContent=Math.max(0,t);
-    if(t<=0){
-      clearInterval(mgTimerInt);
-      setTimeout(()=>{ showScreen('game'); loadQuestion(); },700);
-    }
+  mgInt=setInterval(()=>{
+    t--;$('mg-clock').textContent=Math.max(0,t);
+    if(t<=0){clearInterval(mgInt);setTimeout(()=>{showScreen('game');loadQuestion()},700)}
   },1000);
 }
 
-// ── RESULTS ───────────────────────────────────────────
+// ─── RESULTS ───────────────────────────────────────────
 function showResults(){
-  clearInterval(timerInterval); clearInterval(mgTimerInt);
+  clearInterval(timerInt);clearInterval(mgInt);
   showScreen('results');
   const pct=correctCount/QUOTES.length;
   let icon,name,desc;
-  if(pct>=.96){icon='🏆';name='Master Vintner';       desc='"Thou art the finest scholar in all of Messina\'s vineyard! Even Benedick falls silent."';}
-  else if(pct>=.80){icon='🌹';name='Knight of the Vine';   desc='"A fine harvest! Don Pedro himself would toast to thy scholarship."';}
-  else if(pct>=.65){icon='🍇';name='Friend of Beatrice';   desc='"Thou hast spirit and wit! A little more study shall make thee formidable."';}
-  else if(pct>=.50){icon='🌿';name='Vineyard Apprentice';  desc='"Thou pressed some grapes well — but others escaped thee. Review thy quotes!"';}
-  else if(pct>=.30){icon='🌱';name="Dogberry's Deputy";    desc='"Thou art not the most wit-full... but thou art sensible and fitting!"';}
-  else{icon='🗡️';name="Don John's Pawn";desc='"Thou hast been deceived at every turn. Return to the vineyard and study more!"';}
+  if(pct>=.96){icon='🏆';name='Master Vintner';desc='"Thou art the finest scholar in all of Messina\'s vineyard. Even Benedick is left speechless."'}
+  else if(pct>=.80){icon='🌹';name='Knight of the Vine';desc='"A fine harvest! Don Pedro himself would raise a glass to thy scholarship."'}
+  else if(pct>=.65){icon='🍇';name='Friend of Beatrice';desc='"Thou hast spirit and wit — a little more study and thou shalt be formidable indeed."'}
+  else if(pct>=.50){icon='🌿';name='Vineyard Apprentice';desc='"Thou pressed some grapes well — but others escaped thee. Review thy quotes and try again!"'}
+  else if(pct>=.30){icon='🌱';name="Dogberry's Deputy";desc='"Thou art not the most wit-full of scholars... but thou art sensible and fitting, which is enough."'}
+  else{icon='🗡️';name="Don John's Pawn";desc='"Thou hast been deceived at every turn. Return to the vineyard and study thy play more carefully!"'}
 
-  $('rank-icon').textContent=icon; $('rank-name').textContent=name; $('rank-desc').textContent=desc;
-  $('stat-score').textContent=score; $('stat-correct').textContent=`${correctCount}/${QUOTES.length}`; $('stat-streak').textContent=bestStreak;
+  $('rank-icon').textContent=icon;$('rank-name').textContent=name;$('rank-desc').textContent=desc;
+  $('s-score').textContent=score;$('s-correct').textContent=`${correctCount}/25`;$('s-streak').textContent=bestStreak;
 
-  if(missedQuotes.length>0){
+  if(missedQuotes.length){
     $('review-section').style.display='block';
     $('review-list').innerHTML=missedQuotes.map(q=>`
       <div class="missed-item">
-        <div class="missed-q">${q.text.length>90?q.text.slice(0,90)+'…"':q.text}</div>
+        <div class="missed-q">${q.text.length>100?q.text.slice(0,100)+'…"':q.text}</div>
         <div class="missed-a">Speaker: ${q.speaker} — ${q.act}</div>
       </div>`).join('');
-  } else { $('review-section').style.display='none'; }
+  } else $('review-section').style.display='none';
 
-  if(pct>=.80) launchConfetti();
+  if(pct>=.80)launchConfetti();
 }
 
-// ── CONFETTI ──────────────────────────────────────────
+// ─── CONFETTI ──────────────────────────────────────────
 function launchConfetti(){
-  const canvas=$('confetti-canvas'), ctx=canvas.getContext('2d');
-  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
-  const colors=['#c8941a','#e8c040','#c0392b','#7d3c98','#2471a3','#1e8449','#4a8c2a','#c0166b'];
-  const pieces=Array.from({length:130},()=>({
-    x:Math.random()*canvas.width, y:Math.random()*-canvas.height,
-    r:Math.random()*7+3, d:Math.random()*4+2,
-    color:rnd(colors), tiltAngle:0, tiltSpeed:Math.random()*.1+.05, tilt:0
+  const canvas=$('confetti-canvas'),ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth;canvas.height=window.innerHeight;
+  const colors=['#c8941a','#e8c040','#c0392b','#7d3c98','#1a6fa3','#1a7a40','#4a8c2a','#b01270'];
+  const pieces=Array.from({length:140},()=>({
+    x:Math.random()*canvas.width,y:Math.random()*-canvas.height,
+    r:Math.random()*6+3,d:Math.random()*4+2,
+    color:rnd(colors),ta:0,ts:Math.random()*.1+.04,tilt:0
   }));
-  let frame=0;
+  let f=0;
   (function draw(){
     ctx.clearRect(0,0,canvas.width,canvas.height);
-    pieces.forEach(p=>{
-      p.tiltAngle+=p.tiltSpeed; p.y+=p.d; p.tilt=Math.sin(p.tiltAngle)*14;
-      if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width;}
-      ctx.beginPath(); ctx.lineWidth=p.r; ctx.strokeStyle=p.color;
-      ctx.moveTo(p.x+p.tilt+p.r/2,p.y); ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/2); ctx.stroke();
+    pieces.forEach(p=>{p.ta+=p.ts;p.y+=p.d;p.tilt=Math.sin(p.ta)*13;
+      if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width}
+      ctx.beginPath();ctx.lineWidth=p.r;ctx.strokeStyle=p.color;
+      ctx.moveTo(p.x+p.tilt+p.r/2,p.y);ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/2);ctx.stroke();
     });
-    if(++frame<260) requestAnimationFrame(draw);
+    if(++f<280)requestAnimationFrame(draw);
     else ctx.clearRect(0,0,canvas.width,canvas.height);
   })();
 }
 
-// ── WIRE UP ───────────────────────────────────────────
-document.addEventListener('DOMContentLoaded',function(){
-  document.getElementById('btn-start').addEventListener('click', startGame);
-  document.getElementById('btn-next').addEventListener('click',  nextQuestion);
-  document.getElementById('btn-again').addEventListener('click', resetGame);
-  buildTracker();
+// ─── INIT ──────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',()=>{
+  buildVine();
+  $('btn-start').addEventListener('click',startGame);
+  $('btn-next').addEventListener('click',nextQuestion);
+  $('btn-again').addEventListener('click',()=>showScreen('intro'));
 });
-function resetGame(){ showScreen('intro'); }
 </script>
 </body>
 </html>
