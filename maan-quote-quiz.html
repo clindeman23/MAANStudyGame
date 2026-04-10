@@ -347,7 +347,7 @@ hr.divider { border: none; border-top: 1px solid rgba(212,175,55,.25); margin: 1
           <li>All 25 quotes from your study guide are here</li>
         </ul>
       </div>
-      <button class="btn-gold" onclick="startGame()">Begin the Masquerade</button>
+      <button class="btn-gold" id="btn-start">Begin the Masquerade</button>
     </div>
   </div>
 
@@ -379,7 +379,7 @@ hr.divider { border: none; border-top: 1px solid rgba(212,175,55,.25); margin: 1
 
     <div class="feedback" id="feedback"></div>
     <div class="next-area">
-      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Quote →</button>
+      <button class="btn-next" id="btn-next">Next Quote →</button>
     </div>
   </div>
 
@@ -402,7 +402,7 @@ hr.divider { border: none; border-top: 1px solid rgba(212,175,55,.25); margin: 1
         <div id="review-list"></div>
         <hr class="divider">
       </div>
-      <button class="btn-gold" onclick="resetGame()">Play Again</button>
+      <button class="btn-gold" id="btn-again">Play Again</button>
     </div>
   </div>
 
@@ -735,6 +735,13 @@ function launchConfetti() {
   }
   draw();
 }
+
+// ─── WIRE UP BUTTONS (no inline onclick — works everywhere) ──────────────────
+document.addEventListener('DOMContentLoaded', function () {
+  document.getElementById('btn-start').addEventListener('click', startGame);
+  document.getElementById('btn-next').addEventListener('click', nextQuestion);
+  document.getElementById('btn-again').addEventListener('click', resetGame);
+});
 </script>
 </body>
 </html>
