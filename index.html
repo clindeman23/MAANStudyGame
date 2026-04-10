@@ -3,413 +3,407 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>The Masquerade at Messina — Much Ado About Nothing</title>
+<title>The Vineyard at Messina — Much Ado About Nothing</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Lato:wght@400;700&display=swap');
 
 :root {
-  --bg-dark: #0a0400;
-  --bg-mid: #160800;
-  --parchment: #f0deb4;
-  --parchment-dim: #b8a070;
-  --gold: #d4af37;
-  --gold-light: #f0d878;
-  --card-bg: rgba(18, 8, 0, 0.88);
-  --correct-green: #2ecc71;
-  --wrong-red: #e74c3c;
+  --wine:       #8b1a1a;
+  --wine-mid:   #c0392b;
+  --vine-dark:  #2d5a1b;
+  --vine-mid:   #4a8c2a;
+  --vine-light: #8bc34a;
+  --earth:      #7a5230;
+  --gold:       #c8941a;
+  --cream:      #faf4e4;
+  --panel:      rgba(252,248,234,0.95);
+  --border:     #9b7040;
+  --text:       #3a2010;
+  --text-mid:   #6b4226;
 }
-
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-body {
-  min-height: 100vh;
-  background: var(--bg-dark);
-  background-image:
-    radial-gradient(ellipse 100% 50% at 50% 0%, #2d1000 0%, transparent 65%),
-    radial-gradient(ellipse 60% 40% at 0% 100%, #1a0800 0%, transparent 55%),
-    radial-gradient(ellipse 60% 40% at 100% 100%, #1a0800 0%, transparent 55%);
-  font-family: 'Crimson Text', Georgia, serif;
-  color: var(--parchment);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  overflow-x: hidden;
-}
+body { min-height: 100vh; font-family: 'Lato', Georgia, sans-serif; color: var(--text); overflow-x: hidden; }
 
-/* Starfield */
-body::before {
+/* ── VINEYARD BACKGROUND ── */
+#scene {
+  position: fixed; inset: 0; z-index: 0;
+  background: linear-gradient(
+    to bottom,
+    #5aabdc 0%, #8ecef5 18%, #c8e8f8 32%,
+    #d8efc0 38%, #7ab84a 39%, #5a9a32 50%,
+    #48841e 60%, #6b5020 72%, #503c14 100%
+  );
+}
+#scene::before {
   content: '';
-  position: fixed;
-  inset: 0;
-  background-image:
-    radial-gradient(1px 1px at 8%  12%, rgba(255,220,80,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 23% 35%, rgba(255,220,80,.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 38%  8%, rgba(255,220,80,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 55% 22%, rgba(255,220,80,.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 72% 15%, rgba(255,220,80,.7) 0%, transparent 100%),
-    radial-gradient(1px 1px at 85% 40%, rgba(255,220,80,.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 92% 68%, rgba(255,220,80,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 18% 72%, rgba(255,220,80,.5) 0%, transparent 100%),
-    radial-gradient(1px 1px at 65% 80%, rgba(255,220,80,.4) 0%, transparent 100%),
-    radial-gradient(1px 1px at 44% 90%, rgba(255,220,80,.6) 0%, transparent 100%),
-    radial-gradient(1px 1px at 78% 55%, rgba(255,220,80,.3) 0%, transparent 100%),
-    radial-gradient(1px 1px at 32% 58%, rgba(255,220,80,.5) 0%, transparent 100%);
-  pointer-events: none;
-  z-index: 0;
+  position: absolute; bottom: 0; left: 0; right: 0; height: 42%;
+  background-image: repeating-linear-gradient(
+    to bottom, transparent 0, transparent 16px,
+    rgba(20,50,5,0.35) 16px, rgba(20,50,5,0.35) 20px
+  );
+}
+#scene::after {
+  content: '';
+  position: absolute; top: 5%; right: 14%;
+  width: 72px; height: 72px;
+  background: radial-gradient(circle, #fff7a0 20%, #ffd700 55%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 50px 20px rgba(255,210,0,0.35);
 }
 
-#app { position: relative; z-index: 1; width: 100%; max-width: 820px; }
+/* ── ROSE TRACKER ── */
+#rose-tracker {
+  position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
+  z-index: 20; display: flex; flex-direction: column; align-items: center; gap: 2px;
+  background: rgba(252,248,234,0.92); border: 1.5px solid rgba(155,112,64,0.4);
+  border-radius: 14px; padding: 10px 6px;
+  box-shadow: 0 4px 20px rgba(60,30,10,0.2); min-width: 40px;
+}
+.rt-label { font-size: 0.5rem; text-transform: uppercase; letter-spacing: 1px; color: var(--earth); font-weight: 700; margin-bottom: 5px; text-align: center; }
+.rose-slot { font-size: 1.1rem; line-height: 1.15; opacity: 0.18; transition: opacity 0.5s, transform 0.5s; transform: scale(0.7); }
+.rose-slot.bloomed { opacity: 1; transform: scale(1.1); animation: bloom-pop 0.5s cubic-bezier(.2,1.4,.5,1) forwards; }
+@keyframes bloom-pop { 0%{transform:scale(0.5)} 60%{transform:scale(1.25)} 100%{transform:scale(1.1)} }
+.rt-count { font-size: 0.58rem; color: var(--wine); font-weight: 700; margin-top: 5px; }
+.rt-div { width: 26px; border: none; border-top: 1px solid rgba(155,112,64,0.3); margin: 3px 0; }
 
-/* ── SCREENS ── */
-.screen { display: none; }
+/* ── MAIN LAYOUT ── */
+#app {
+  position: relative; z-index: 5; min-height: 100vh;
+  display: flex; align-items: flex-start; justify-content: center;
+  padding: 20px 58px 20px 20px;
+}
+.screen { display: none; width: 100%; max-width: 780px; margin-top: 20px; }
 .screen.active { display: block; }
 
-/* ── SHARED CARD ── */
+/* ── PANEL ── */
 .panel {
-  background: var(--card-bg);
-  border: 2px solid var(--gold);
-  border-radius: 6px;
-  box-shadow: 0 0 50px rgba(212,175,55,.18), inset 0 0 40px rgba(0,0,0,.5);
+  background: var(--panel); border: 2px solid var(--border); border-radius: 10px;
+  box-shadow: 0 8px 36px rgba(60,30,10,0.22), 0 2px 8px rgba(60,30,10,0.12);
   position: relative;
 }
-.panel::before { content: '❧'; position: absolute; top: 10px; left: 14px; color: var(--gold); opacity: .4; font-size: 18px; }
-.panel::after  { content: '❧'; position: absolute; bottom: 10px; right: 14px; color: var(--gold); opacity: .4; font-size: 18px; transform: rotate(180deg); }
+.panel-leaf { position: absolute; font-size: 20px; pointer-events: none; opacity: 0.6; }
+.panel-leaf.tl { top: -4px; left: 10px; transform: rotate(-40deg); }
+.panel-leaf.br { bottom: -4px; right: 10px; transform: rotate(140deg); }
 
 /* ── INTRO ── */
-#intro { text-align: center; padding: 30px 16px; }
-.intro-deco { font-size: 56px; margin-bottom: 12px; animation: bob 3s ease-in-out infinite; }
-@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-
+#intro { text-align: center; }
+.intro-inner { padding: 32px 28px 36px; }
+.intro-deco { font-size: 64px; margin-bottom: 10px; animation: grapesway 2.5s ease-in-out infinite; }
+@keyframes grapesway { 0%,100%{transform:rotate(-6deg)} 50%{transform:rotate(6deg)} }
 .game-title {
-  font-family: 'Cinzel Decorative', serif;
-  font-size: clamp(1.5rem, 5vw, 2.7rem);
-  color: var(--gold);
-  text-shadow: 0 0 24px rgba(212,175,55,.55), 0 2px 6px rgba(0,0,0,.9);
-  line-height: 1.2;
-  margin-bottom: 6px;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.7rem, 5vw, 2.9rem);
+  color: var(--wine); text-shadow: 1px 2px 4px rgba(0,0,0,0.12);
+  line-height: 1.2; margin-bottom: 4px;
 }
 .game-subtitle {
-  font-family: 'Cinzel', serif;
-  font-size: clamp(.8rem, 2.2vw, 1.05rem);
-  color: var(--parchment-dim);
-  letter-spacing: 3px;
-  margin-bottom: 26px;
-}
-
-.intro-panel {
-  padding: 28px 28px 32px;
-  margin: 0 auto 0;
-  max-width: 620px;
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(0.85rem, 2vw, 1.05rem); color: var(--earth);
+  letter-spacing: 1px; margin-bottom: 22px;
 }
 .intro-flavor {
-  font-style: italic;
-  font-size: 1.1rem;
-  line-height: 1.7;
-  color: var(--parchment);
-  margin-bottom: 22px;
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1rem; color: var(--text-mid); line-height: 1.75; margin-bottom: 18px;
 }
-.how-to {
-  text-align: left;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(212,175,55,.25);
-  border-radius: 4px;
-  padding: 16px 22px;
-  margin-bottom: 26px;
+.rules-box {
+  background: rgba(139,101,48,0.07); border: 1px solid rgba(139,101,48,0.22);
+  border-radius: 8px; padding: 14px 20px; margin-bottom: 22px; text-align: left;
 }
-.how-to h3 {
-  font-family: 'Cinzel', serif;
-  font-size: .85rem;
-  letter-spacing: 2px;
-  color: var(--gold);
-  margin-bottom: 12px;
-  text-transform: uppercase;
+.rules-box h3 { font-family: 'Playfair Display', serif; color: var(--vine-dark); margin-bottom: 10px; font-size: 1rem; }
+.rules-box li { list-style: none; padding: 3px 0; font-size: 0.93rem; color: var(--text-mid); line-height: 1.5; }
+.rules-box li::before { content: '🍇 '; }
+.btn-wine {
+  font-family: 'Playfair Display', serif; font-size: 1.05rem;
+  color: var(--cream); background: linear-gradient(135deg, #6a1010 0%, var(--wine-mid) 50%, #6a1010 100%);
+  border: 2px solid #5a0e0e; padding: 13px 40px; cursor: pointer;
+  border-radius: 6px; transition: all 0.2s; box-shadow: 0 4px 14px rgba(139,26,26,0.4);
 }
-.how-to li { list-style: none; padding: 3px 0; font-size: 1rem; line-height: 1.5; }
-.how-to li::before { content: '⚜ '; color: var(--gold); }
+.btn-wine:hover { transform: translateY(-2px); box-shadow: 0 7px 22px rgba(139,26,26,0.5); }
 
-.btn-gold {
-  font-family: 'Cinzel', serif;
-  font-size: 1rem;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  color: #0a0400;
-  background: linear-gradient(135deg, #b8870f 0%, var(--gold-light) 50%, #b8870f 100%);
-  border: none;
-  padding: 13px 38px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all .2s;
-  box-shadow: 0 4px 18px rgba(212,175,55,.45);
-}
-.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 7px 28px rgba(212,175,55,.6); }
-.btn-gold:active { transform: translateY(0); }
-
-/* ── GAME ── */
-#game { padding: 8px 0; }
-
+/* ── HUD ── */
 .hud {
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 16px;
-  background: rgba(0,0,0,.45);
-  border: 1px solid rgba(212,175,55,.25);
-  border-radius: 5px;
-  margin-bottom: 10px;
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  padding: 10px 16px; background: rgba(252,248,234,0.9);
+  border: 1px solid rgba(139,101,48,0.28); border-radius: 8px;
+  margin-bottom: 10px; box-shadow: 0 2px 8px rgba(60,30,10,0.1);
 }
 .hud-stat { display: flex; flex-direction: column; }
 .hud-stat.right { align-items: flex-end; }
-.hud-label { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: 2px; color: var(--parchment-dim); text-transform: uppercase; }
-.hud-value { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); }
-.hud-center { font-family: 'Cinzel', serif; font-size: .85rem; color: var(--parchment-dim); text-align: center; line-height: 1.4; }
+.hud-lbl { font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; color: var(--earth); font-weight: 700; }
+.hud-val { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--wine); font-weight: 700; }
+.hud-center { text-align: center; font-size: 0.82rem; color: var(--text-mid); font-weight: 700; }
 
-/* Progress + Timer bars */
-.bar-row { height: 6px; background: rgba(0,0,0,.5); border: 1px solid rgba(212,175,55,.15); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
-.bar-fill { height: 100%; border-radius: 3px; transition: width .45s ease; }
-#progress-fill { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
-#timer-fill { background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%); transition: width 1s linear; }
+.bar-wrap { height: 8px; background: rgba(139,101,48,0.14); border-radius: 4px; margin-bottom: 8px; overflow: hidden; border: 1px solid rgba(139,101,48,0.18); }
+.bar-fill { height: 100%; border-radius: 4px; transition: width 0.45s ease; }
+#progress-fill { background: linear-gradient(90deg, var(--vine-dark), var(--vine-light)); }
+#timer-fill { background: linear-gradient(90deg, var(--wine-mid) 0%, var(--gold) 55%, var(--vine-mid) 100%); transition: width 1s linear; }
 
-/* Quote card */
+/* ── QUOTE CARD ── */
 .quote-card {
-  padding: 28px 32px 24px;
-  margin-bottom: 14px;
-  text-align: center;
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 10px;
+  padding: 22px 28px 18px; margin-bottom: 14px; text-align: center;
+  min-height: 165px; display: flex; flex-direction: column; justify-content: center; gap: 8px;
 }
-.quote-card::before { content: '\201C'; font-size: 72px; opacity: .12; font-family: Georgia,serif; line-height:1; top: 4px; left: 14px; }
-.quote-card::after  { content: '\201D'; font-size: 72px; opacity: .12; font-family: Georgia,serif; line-height:1; bottom: -12px; right: 14px; }
-
-.act-tag {
-  font-family: 'Cinzel', serif;
-  font-size: .7rem;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--parchment-dim);
-}
-.ornament { color: var(--gold); opacity: .45; font-size: 1rem; letter-spacing: 10px; }
+.act-tag { font-size: 0.68rem; letter-spacing: 2.5px; text-transform: uppercase; color: var(--earth); font-weight: 700; }
+.vine-ornament { color: var(--vine-mid); opacity: 0.5; font-size: 1rem; letter-spacing: 8px; }
 .quote-text {
-  font-style: italic;
-  font-size: clamp(1rem, 2.4vw, 1.18rem);
-  line-height: 1.75;
-  color: var(--parchment);
-  padding: 0 10px;
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(0.98rem, 2.2vw, 1.13rem); line-height: 1.78; color: var(--text); padding: 0 8px;
 }
-.who-prompt {
-  font-family: 'Cinzel', serif;
-  font-size: .72rem;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-top: 4px;
-}
+.who-prompt { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--wine); font-weight: 700; margin-top: 4px; }
 
-/* Character grid */
-.char-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
-  margin-bottom: 12px;
-}
+/* ── CHARACTER GRID ── */
+.char-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; margin-bottom: 12px; }
 @media (min-width: 480px) { .char-grid { grid-template-columns: repeat(4, 1fr); } }
 
 .char-btn {
-  background: rgba(15,6,0,.8);
-  border: 2px solid;
-  border-radius: 5px;
-  padding: 14px 8px;
-  cursor: pointer;
-  transition: transform .15s, box-shadow .15s;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
+  background: var(--panel); border: 2px solid; border-radius: 8px;
+  padding: 14px 8px; cursor: pointer; transition: transform 0.15s, box-shadow 0.15s;
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  position: relative; overflow: visible;
 }
-.char-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.char-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(60,30,10,0.2); }
 .char-btn:disabled { cursor: default; }
-
 .char-portrait {
-  width: 58px; height: 58px;
-  border-radius: 50%;
-  border: 2px solid;
+  width: 58px; height: 58px; border-radius: 50%; border: 2px solid;
   display: flex; align-items: center; justify-content: center;
-  font-size: 26px;
+  font-size: 26px; background: var(--cream); position: relative; z-index: 1;
+  transition: transform 0.3s;
 }
+.char-btn:hover .char-portrait { transform: scale(1.08); }
 .char-name {
-  font-family: 'Cinzel', serif;
-  font-size: .7rem;
-  letter-spacing: .5px;
-  color: var(--parchment);
-  text-align: center;
-  line-height: 1.3;
+  font-family: 'Playfair Display', serif; font-size: 0.7rem;
+  color: var(--text); text-align: center; line-height: 1.3; font-weight: 700; position: relative; z-index: 1;
 }
 
-/* Feedback bar */
+/* ── LEAVES ── */
+.btn-leaf {
+  position: absolute; pointer-events: none; z-index: 4;
+  border-radius: 50% 0 50% 0;
+  transition: transform 0.55s cubic-bezier(.15,1.4,.5,1), opacity 0.45s ease;
+}
+.btn-leaf::after {
+  content: ''; position: absolute; top: 50%; left: 10%;
+  width: 80%; height: 1px; background: rgba(0,0,0,0.18);
+  transform: translateY(-50%) rotate(-45deg);
+}
+.btn-leaf.scatter { opacity: 0 !important; }
+
+/* ── FEEDBACK ── */
 .feedback {
-  border-radius: 4px;
-  padding: 12px 16px;
-  font-size: 1rem;
-  min-height: 46px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  margin-bottom: 8px;
-  transition: opacity .25s;
-  opacity: 0;
+  border-radius: 6px; padding: 11px 16px; font-size: 0.96rem; min-height: 44px;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  margin-bottom: 8px; opacity: 0; transition: opacity 0.25s;
+  font-family: 'Playfair Display', serif; font-style: italic;
 }
 .feedback.show { opacity: 1; }
-.feedback.correct { background: rgba(46,204,113,.2); border: 1px solid var(--correct-green); color: #a8f5b8; }
-.feedback.wrong   { background: rgba(231,76,60,.2);  border: 1px solid var(--wrong-red);   color: #f5a8a8; }
+.feedback.correct { background: rgba(74,140,42,0.12); border: 1.5px solid var(--vine-mid); color: var(--vine-dark); }
+.feedback.wrong   { background: rgba(192,57,43,0.1);  border: 1.5px solid var(--wine-mid); color: var(--wine); }
 
 .next-area { text-align: center; min-height: 44px; }
 .btn-next {
-  font-family: 'Cinzel', serif;
-  font-size: .85rem;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  color: #0a0400;
-  background: linear-gradient(135deg, #b8870f, var(--gold-light), #b8870f);
-  border: none;
-  padding: 10px 32px;
-  cursor: pointer;
-  border-radius: 4px;
-  transition: all .2s;
-  opacity: 0;
-  pointer-events: none;
+  font-family: 'Playfair Display', serif; font-size: 0.88rem;
+  color: var(--cream); background: linear-gradient(135deg, var(--vine-dark), var(--vine-mid));
+  border: 2px solid var(--vine-dark); padding: 10px 34px; cursor: pointer;
+  border-radius: 6px; transition: all 0.2s; opacity: 0; pointer-events: none;
 }
 .btn-next.show { opacity: 1; pointer-events: all; }
-.btn-next:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(212,175,55,.45); }
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(45,90,27,0.4); }
+
+/* ── MINI-GAME ── */
+#minigame { text-align: center; }
+.mg-inner { padding: 26px 24px 30px; }
+.mg-title { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--vine-dark); margin-bottom: 4px; }
+.mg-subtitle { color: var(--earth); font-size: 0.95rem; margin-bottom: 14px; }
+.mg-timer-row { display: flex; justify-content: center; align-items: center; gap: 14px; margin-bottom: 12px; }
+.mg-timer { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--wine); font-weight: 700; min-width: 2.5rem; text-align: center; }
+.mg-score-live { font-size: 1.05rem; color: var(--vine-dark); font-weight: 700; }
+.grape-field {
+  position: relative; width: 100%; height: 260px;
+  background: linear-gradient(to bottom, #a8d878 0%, #6aaa38 50%, #4a8820 100%);
+  border-radius: 10px; overflow: hidden; border: 2px solid var(--vine-dark);
+  margin-bottom: 14px; cursor: crosshair;
+}
+.grape-field::before {
+  content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
+  background: rgba(60,40,10,0.4); z-index: 1;
+}
+.grape-field::after {
+  content: ''; position: absolute; inset: 0;
+  background-image: repeating-linear-gradient(
+    to bottom, transparent 0, transparent 38px,
+    rgba(30,80,10,0.25) 38px, rgba(30,80,10,0.25) 40px
+  );
+}
+.grape-target {
+  position: absolute; font-size: 2.4rem; cursor: pointer; user-select: none;
+  z-index: 5; animation: grape-float 2.2s ease-in-out infinite;
+  filter: drop-shadow(0 3px 6px rgba(0,0,0,0.3));
+  transition: transform 0.1s;
+}
+.grape-target:hover { transform: scale(1.25) !important; }
+.grape-target.popped { pointer-events: none; animation: grape-pop 0.35s ease forwards; }
+@keyframes grape-float { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-12px) rotate(5deg)} }
+@keyframes grape-pop  { 0%{transform:scale(1);opacity:1} 50%{transform:scale(1.6);opacity:0.6} 100%{transform:scale(0);opacity:0} }
+.mg-instructions { font-style: italic; color: var(--text-mid); font-size: 0.9rem; }
 
 /* ── RESULTS ── */
-#results { text-align: center; padding: 24px 16px; }
-.results-panel { padding: 36px 28px; max-width: 600px; margin: 0 auto; }
-.results-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.3rem, 4vw, 1.9rem); color: var(--gold); margin-bottom: 6px; }
-.rank-icon { font-size: 72px; margin: 16px 0; animation: throb 2s ease-in-out infinite; }
+#results { text-align: center; }
+.results-inner { padding: 34px 28px; }
+.results-title { font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 4vw, 2rem); color: var(--wine); margin-bottom: 6px; }
+.results-orn { color: var(--vine-mid); font-size: 1.3rem; letter-spacing: 10px; opacity: 0.5; margin-bottom: 4px; }
+.rank-icon { font-size: 68px; margin: 14px 0; animation: throb 2s ease-in-out infinite; }
 @keyframes throb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
-.rank-name { font-family: 'Cinzel', serif; font-size: 1.35rem; color: var(--gold-light); margin-bottom: 6px; }
-.rank-quote { font-style: italic; color: var(--parchment-dim); font-size: 1.05rem; line-height: 1.6; margin-bottom: 22px; padding: 0 10px; }
-
-.stats-row { display: flex; justify-content: center; gap: 32px; margin-bottom: 24px; }
+.rank-name { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--vine-dark); margin-bottom: 5px; }
+.rank-desc { font-family: 'Playfair Display', serif; font-style: italic; color: var(--text-mid); font-size: 0.98rem; line-height: 1.65; margin-bottom: 20px; padding: 0 8px; }
+.stats-row { display: flex; justify-content: center; gap: 28px; margin-bottom: 20px; }
 .stat-box { text-align: center; }
-.stat-val { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); }
-.stat-lbl { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--parchment-dim); margin-top: 2px; }
-
-hr.divider { border: none; border-top: 1px solid rgba(212,175,55,.25); margin: 18px 0; }
-
-/* Missed quotes review */
-.review-section { text-align: left; margin-bottom: 20px; }
-.review-title { font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
-.missed-item { background: rgba(0,0,0,.3); border-left: 3px solid var(--wrong-red); padding: 8px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0; }
-.missed-item .m-quote { font-style: italic; font-size: .9rem; color: var(--parchment-dim); margin-bottom: 4px; }
-.missed-item .m-answer { font-family: 'Cinzel', serif; font-size: .75rem; color: var(--correct-green); letter-spacing: 1px; }
+.stat-val { font-family: 'Playfair Display', serif; font-size: 1.9rem; color: var(--wine); }
+.stat-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 2px; color: var(--earth); margin-top: 2px; font-weight: 700; }
+hr.rdiv { border: none; border-top: 1px solid rgba(155,112,64,0.25); margin: 16px 0; }
+.review-section { text-align: left; margin-bottom: 16px; }
+.review-heading { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; color: var(--wine); margin-bottom: 10px; font-weight: 700; }
+.missed-item { background: rgba(192,57,43,0.06); border-left: 3px solid var(--wine-mid); padding: 8px 12px; margin-bottom: 7px; border-radius: 0 6px 6px 0; }
+.missed-q { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.86rem; color: var(--text-mid); margin-bottom: 3px; }
+.missed-a { font-size: 0.73rem; color: var(--vine-dark); font-weight: 700; }
 
 /* ── ANIMATIONS ── */
-@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
-.slide-up { animation: slideUp .4s ease forwards; }
+@keyframes slideUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+.slide-up { animation: slideUp 0.4s ease forwards; }
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-6px)} 80%{transform:translateX(6px)} }
+.shake { animation: shake 0.4s ease; }
+@keyframes vineGlow { 0%{box-shadow:0 0 0 rgba(74,140,42,0)} 40%{box-shadow:0 0 28px rgba(74,140,42,0.5)} 100%{box-shadow:0 0 0 rgba(74,140,42,0)} }
+.vine-glow { animation: vineGlow 0.7s ease; }
 
-@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
-.shake { animation: shake .4s ease; }
-
-@keyframes flashGreen { 0%{box-shadow:0 0 0 rgba(46,204,113,0)} 40%{box-shadow:0 0 30px rgba(46,204,113,.5), inset 0 0 20px rgba(46,204,113,.1)} 100%{box-shadow:0 0 0 rgba(46,204,113,0)} }
-.flash-green { animation: flashGreen .7s ease; }
-
-/* Confetti canvas */
 #confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+
+@media (max-width: 500px) {
+  #app { padding: 12px 52px 12px 12px; }
+  #rose-tracker { right: 3px; min-width: 34px; padding: 8px 4px; }
+  .rose-slot { font-size: 0.95rem; }
+}
 </style>
 </head>
 <body>
 <canvas id="confetti-canvas"></canvas>
+<div id="scene"></div>
+
+<!-- Rose tracker sidebar -->
+<div id="rose-tracker">
+  <div class="rt-label">Correct</div>
+  <div id="rose-slots"></div>
+  <hr class="rt-div">
+  <div class="rt-count" id="rt-count">0/25</div>
+</div>
+
 <div id="app">
 
-  <!-- ══════════ INTRO ══════════ -->
+  <!-- ════ INTRO ════ -->
   <div id="intro" class="screen active">
-    <div class="intro-deco">🎭</div>
-    <h1 class="game-title">The Masquerade<br>at Messina</h1>
-    <h2 class="game-subtitle">A Much Ado About Nothing Quote Quiz</h2>
-    <div class="panel intro-panel">
-      <p class="intro-flavor">
-        Don John's treachery has thrown Messina into chaos — and scrambled the words of every character with it!
-        Can you unmask each speaker and restore order before time runs out?
-      </p>
-      <div class="how-to">
-        <h3>⚜ &nbsp; How to Play &nbsp; ⚜</h3>
-        <ul>
-          <li>A quote from the play appears on screen</li>
-          <li>Select the character who spoke those words</li>
-          <li>You have <strong>20 seconds</strong> per quote</li>
-          <li>Build a streak of 3+ for bonus points!</li>
-          <li>All 25 quotes from your study guide are here</li>
-        </ul>
+    <div class="panel">
+      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
+      <div class="intro-inner">
+        <div class="intro-deco">🍇</div>
+        <h1 class="game-title">The Vineyard at Messina</h1>
+        <p class="game-subtitle">A Much Ado About Nothing Quote Quiz</p>
+        <p class="intro-flavor">
+          The grapes of Messina hang heavy on the vine — but Don John has scattered leaves
+          across every speaker's words! Brush them away, name the voice, and harvest your way to glory.
+        </p>
+        <div class="rules-box">
+          <h3>🌿 How to Play</h3>
+          <ul>
+            <li>A quote appears on the scroll — hover the answer cards to blow leaves away</li>
+            <li>Click the character who spoke those words</li>
+            <li>You have <strong>20 seconds</strong> per quote</li>
+            <li>3+ correct in a row earns streak bonus points 🌹</li>
+            <li>After every 5 questions: Grape Harvest mini-game!</li>
+            <li>All 25 quotes from your study guide are included</li>
+          </ul>
+        </div>
+        <button class="btn-wine" id="btn-start">Enter the Vineyard</button>
       </div>
-      <button class="btn-gold" id="btn-start">Begin the Masquerade</button>
     </div>
   </div>
 
-  <!-- ══════════ GAME ══════════ -->
+  <!-- ════ GAME ════ -->
   <div id="game" class="screen">
     <div class="hud">
       <div class="hud-stat">
-        <span class="hud-label">Score</span>
-        <span class="hud-value" id="hud-score">0</span>
+        <span class="hud-lbl">Score</span>
+        <span class="hud-val" id="hud-score">0</span>
       </div>
       <div class="hud-center" id="hud-progress">Question 1 of 25</div>
       <div class="hud-stat right">
-        <span class="hud-label">Streak</span>
-        <span class="hud-value" id="hud-streak">🔥 0</span>
+        <span class="hud-lbl">Streak</span>
+        <span class="hud-val" id="hud-streak">🔥 0</span>
       </div>
     </div>
-
-    <div class="bar-row"><div class="bar-fill" id="progress-fill" style="width:0%"></div></div>
-    <div class="bar-row"><div class="bar-fill" id="timer-fill" style="width:100%"></div></div>
+    <div class="bar-wrap"><div class="bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="bar-wrap"><div class="bar-fill" id="timer-fill" style="width:100%"></div></div>
 
     <div class="panel quote-card" id="quote-card">
+      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
       <div class="act-tag" id="act-tag">Act 1, Scene 1</div>
-      <div class="ornament">— ❦ —</div>
+      <div class="vine-ornament">— 🍇 —</div>
       <p class="quote-text" id="quote-text"></p>
       <p class="who-prompt">Who spoke these words?</p>
     </div>
 
     <div class="char-grid" id="char-grid"></div>
-
     <div class="feedback" id="feedback"></div>
     <div class="next-area">
       <button class="btn-next" id="btn-next">Next Quote →</button>
     </div>
   </div>
 
-  <!-- ══════════ RESULTS ══════════ -->
-  <div id="results" class="screen">
-    <div class="panel results-panel slide-up">
-      <h2 class="results-title">The Curtain Falls</h2>
-      <div class="ornament" style="font-size:1.4rem;letter-spacing:14px;opacity:.5;">— ❦ ❧ ❦ —</div>
-      <div class="rank-icon" id="rank-icon">🎭</div>
-      <div class="rank-name" id="rank-name">Master of Wit</div>
-      <div class="rank-quote" id="rank-quote"></div>
-      <div class="stats-row">
-        <div class="stat-box"><div class="stat-val" id="stat-score">0</div><div class="stat-lbl">Score</div></div>
-        <div class="stat-box"><div class="stat-val" id="stat-correct">0/25</div><div class="stat-lbl">Correct</div></div>
-        <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">Best Streak</div></div>
+  <!-- ════ MINI-GAME ════ -->
+  <div id="minigame" class="screen">
+    <div class="panel">
+      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
+      <div class="mg-inner">
+        <div class="mg-title">🍇 Grape Harvest!</div>
+        <div class="mg-subtitle">Click every grape before time runs out — each one earns bonus points!</div>
+        <div class="mg-timer-row">
+          <div class="mg-timer" id="mg-timer">6</div>
+          <div class="mg-score-live" id="mg-live">+0 bonus pts</div>
+        </div>
+        <div class="grape-field" id="grape-field"></div>
+        <div class="mg-instructions">🍇 = +3 points &nbsp;|&nbsp; Move fast — they're ripe!</div>
       </div>
-      <hr class="divider">
-      <div id="review-section" class="review-section" style="display:none">
-        <div class="review-title">Quotes to Review</div>
-        <div id="review-list"></div>
-        <hr class="divider">
-      </div>
-      <button class="btn-gold" id="btn-again">Play Again</button>
     </div>
   </div>
 
-</div>
+  <!-- ════ RESULTS ════ -->
+  <div id="results" class="screen">
+    <div class="panel slide-up">
+      <span class="panel-leaf tl">🍃</span><span class="panel-leaf br">🍃</span>
+      <div class="results-inner">
+        <h2 class="results-title">The Harvest Is In</h2>
+        <div class="results-orn">— 🌹 🍇 🌹 —</div>
+        <div class="rank-icon" id="rank-icon">🏆</div>
+        <div class="rank-name" id="rank-name">Master Vintner</div>
+        <div class="rank-desc" id="rank-desc"></div>
+        <div class="stats-row">
+          <div class="stat-box"><div class="stat-val" id="stat-score">0</div><div class="stat-lbl">Score</div></div>
+          <div class="stat-box"><div class="stat-val" id="stat-correct">0/25</div><div class="stat-lbl">Correct</div></div>
+          <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">Best Streak</div></div>
+        </div>
+        <hr class="rdiv">
+        <div id="review-section" class="review-section" style="display:none">
+          <div class="review-heading">Quotes to Study</div>
+          <div id="review-list"></div>
+          <hr class="rdiv">
+        </div>
+        <button class="btn-wine" id="btn-again">Play Again</button>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #app -->
 
 <script>
-// ─── DATA ───────────────────────────────────────────────────────────────────
+// ── DATA ──────────────────────────────────────────────
 const QUOTES = [
   { text: '"There\'s a skirmish of wit between them."', speaker: 'Leonato', act: 'Act 1, Scene 1' },
   { text: '"God help the noble Claudio! If he have caught the Benedick, it will cost him a thousand pound ere he be cured."', speaker: 'Beatrice', act: 'Act 1, Scene 1' },
@@ -439,309 +433,313 @@ const QUOTES = [
 ];
 
 const CHARACTERS = [
-  { name: 'Beatrice',      emoji: '🌹', color: '#c0392b', bg: 'rgba(192,57,43,.22)' },
-  { name: 'Benedick',     emoji: '⚔️', color: '#2980b9', bg: 'rgba(41,128,185,.22)' },
-  { name: 'Claudio',      emoji: '🌿', color: '#27ae60', bg: 'rgba(39,174,96,.22)'  },
-  { name: 'Don Pedro',    emoji: '👑', color: '#8e44ad', bg: 'rgba(142,68,173,.22)' },
-  { name: 'Don John',     emoji: '🗡️', color: '#636e72', bg: 'rgba(99,110,114,.22)' },
-  { name: 'Hero',         emoji: '🌸', color: '#d81b60', bg: 'rgba(216,27,96,.22)'  },
-  { name: 'Leonato',      emoji: '🏛️', color: '#d4ac0d', bg: 'rgba(212,172,13,.22)' },
-  { name: 'Friar Francis',emoji: '✝️', color: '#95a5a6', bg: 'rgba(149,165,166,.22)'},
+  { name: 'Beatrice',      emoji: '🌹', color: '#c0392b', bg: 'rgba(192,57,43,.14)'  },
+  { name: 'Benedick',      emoji: '⚔️', color: '#2471a3', bg: 'rgba(36,113,163,.14)' },
+  { name: 'Claudio',       emoji: '🌿', color: '#1e8449', bg: 'rgba(30,132,73,.14)'  },
+  { name: 'Don Pedro',     emoji: '👑', color: '#7d3c98', bg: 'rgba(125,60,152,.14)' },
+  { name: 'Don John',      emoji: '🗡️', color: '#616a6b', bg: 'rgba(97,106,107,.14)' },
+  { name: 'Hero',          emoji: '🌸', color: '#c0166b', bg: 'rgba(192,22,107,.14)' },
+  { name: 'Leonato',       emoji: '🏛️', color: '#b7950b', bg: 'rgba(183,149,11,.14)' },
+  { name: 'Friar Francis', emoji: '✝️', color: '#808b96', bg: 'rgba(128,139,150,.14)'},
 ];
 
-const HIT_MSGS = [
-  '🎯 Well said! Thou hast sharp ears!',
-  '✨ By my troth — thou knowest thy play!',
-  '👏 Even Benedick would applaud thee!',
-  '🌟 Hark! A true scholar of Messina!',
-  '🎭 Thou hast unmask\'d the speaker!',
-  '⚔️ Right as rain in fair Messina!',
+const LEAF_COLORS = ['#4a8c2a','#2d5a1b','#8bc34a','#c8b040','#d4884a','#c07030','#6aaa38'];
+const SCATTER = [
+  { x:-90, y:-70, r:130  },
+  { x: 80, y:-90, r:-155 },
+  { x:-60, y: 80, r:200  },
+  { x:100, y: 60, r:-90  },
+  { x: 20, y:-110,r:80   },
+];
+const HIT = [
+  '🌹 Well spoken! Thou knowest thy play!',
+  '🍇 Magnifico! Even Benedick would applaud!',
+  '🌿 By my troth — a true scholar of Messina!',
+  '☀️ Right as the Sicilian sun! Bellissimo!',
+  '🎭 Thou hast unmasked the speaker!',
   '🌸 Hero herself smiles upon thee!',
-  '🏆 Verily! Thou art no fool here!',
+  '🍇 The vineyard sings thy name!',
 ];
-const MISS_MSGS = [
+const MISS = [
   'Alas! Thou hast been deceived, as Claudio was.',
-  'Nay! Don John himself could not have done worse.',
+  'Nay — Don John himself could not have done worse.',
   'Zounds! Even Dogberry might have known that one.',
-  'By my sword — thou art quite mistaken!',
+  'By my sword, thou art quite mistaken!',
   'Methinks thou needest more study in Messina.',
-  'Thou hast worn the wrong mask this night!',
 ];
 
-// ─── STATE ──────────────────────────────────────────────────────────────────
-let deck = [], qIdx = 0, score = 0, streak = 0, bestStreak = 0;
-let correctCount = 0, answered = false;
-let timerInterval = null, timeLeft = 20;
-let missedQuotes = [];
+// ── STATE ─────────────────────────────────────────────
+let deck=[], qIdx=0, score=0, streak=0, bestStreak=0;
+let correctCount=0, answered=false, missedQuotes=[];
+let timerInterval=null, timeLeft=20, mgTimerInt=null;
 
-// ─── HELPERS ────────────────────────────────────────────────────────────────
-function shuffle(arr) {
-  const a = [...arr];
-  for (let i = a.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [a[i], a[j]] = [a[j], a[i]];
-  }
+// ── HELPERS ───────────────────────────────────────────
+const $  = id => document.getElementById(id);
+const rnd= arr => arr[Math.floor(Math.random()*arr.length)];
+function shuffle(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}
   return a;
 }
-function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
-function $(id) { return document.getElementById(id); }
-
-function showScreen(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   $(id).classList.add('active');
 }
 
-// ─── GAME FLOW ───────────────────────────────────────────────────────────────
-function startGame() {
-  deck = shuffle(QUOTES);
-  qIdx = 0; score = 0; streak = 0; bestStreak = 0;
-  correctCount = 0; missedQuotes = [];
-  showScreen('game');
-  loadQuestion();
+// ── ROSE TRACKER ──────────────────────────────────────
+function buildTracker(){
+  const c=$('rose-slots'); c.innerHTML='';
+  for(let i=0;i<25;i++){
+    const d=document.createElement('div');
+    d.className='rose-slot'; d.id='rs-'+i;
+    d.textContent=(i%5===4)?'🌹':'🍃';
+    c.appendChild(d);
+  }
+}
+function updateTracker(){
+  for(let i=0;i<25;i++){
+    const el=$('rs-'+i);
+    if(el) el.classList.toggle('bloomed', i<correctCount);
+  }
+  $('rt-count').textContent=correctCount+'/25';
 }
 
-function loadQuestion() {
-  if (qIdx >= deck.length) { showResults(); return; }
+// ── LEAF MECHANICS ────────────────────────────────────
+function addLeaves(btn){
+  btn.querySelectorAll('.btn-leaf').forEach(l=>l.remove());
+  const positions=[
+    {top:'10%',left:'8%', w:22,h:28},
+    {top:'14%',left:'62%',w:19,h:25},
+    {top:'55%',left:'18%',w:25,h:21},
+    {top:'58%',left:'66%',w:21,h:27},
+    {top:'34%',left:'40%',w:17,h:23},
+  ];
+  positions.forEach((pos,i)=>{
+    const leaf=document.createElement('div');
+    leaf.className='btn-leaf';
+    const color=LEAF_COLORS[Math.floor(Math.random()*LEAF_COLORS.length)];
+    const rot=(Math.random()*120-60)+'deg';
+    leaf.style.cssText=`top:${pos.top};left:${pos.left};width:${pos.w}px;height:${pos.h}px;background:${color};transform:rotate(${rot});`;
+    btn.appendChild(leaf);
+  });
+  btn.addEventListener('mouseenter',()=>{
+    btn.querySelectorAll('.btn-leaf').forEach((leaf,i)=>{
+      const sc=SCATTER[i]||SCATTER[0];
+      leaf.style.transform=`translate(${sc.x}px,${sc.y}px) rotate(${sc.r}deg)`;
+      leaf.classList.add('scatter');
+    });
+  });
+}
 
-  answered = false;
-  const q = deck[qIdx];
+// ── GAME ──────────────────────────────────────────────
+function startGame(){
+  deck=shuffle(QUOTES);
+  qIdx=0;score=0;streak=0;bestStreak=0;correctCount=0;missedQuotes=[];
+  buildTracker();updateTracker();
+  showScreen('game');loadQuestion();
+}
 
-  // HUD
-  $('hud-score').textContent = score;
-  $('hud-progress').textContent = `Question ${qIdx + 1} of ${deck.length}`;
-  $('hud-streak').textContent = `🔥 ${streak}`;
-  $('progress-fill').style.width = ((qIdx / deck.length) * 100) + '%';
+function loadQuestion(){
+  if(qIdx>=deck.length){showResults();return;}
+  answered=false;
+  const q=deck[qIdx];
+  $('hud-score').textContent=score;
+  $('hud-progress').textContent=`Question ${qIdx+1} of ${deck.length}`;
+  $('hud-streak').textContent=`🔥 ${streak}`;
+  $('progress-fill').style.width=((qIdx/deck.length)*100)+'%';
+  $('act-tag').textContent=q.act;
+  $('quote-text').textContent=q.text;
 
-  // Quote
-  $('act-tag').textContent = q.act;
-  $('quote-text').textContent = q.text;
+  const fb=$('feedback'); fb.className='feedback'; fb.textContent='';
+  const nb=$('btn-next'); nb.classList.remove('show');
+  nb.textContent=(qIdx>=deck.length-1)?'See Results →':'Next Quote →';
 
-  // Feedback + next
-  const fb = $('feedback');
-  fb.className = 'feedback';
-  fb.textContent = '';
-  $('btn-next').classList.remove('show');
+  const correct=CHARACTERS.find(c=>c.name===q.speaker);
+  const options=shuffle([correct,...shuffle(CHARACTERS.filter(c=>c.name!==q.speaker)).slice(0,3)]);
 
-  // Build character options: correct + 3 random distractors
-  const correct = CHARACTERS.find(c => c.name === q.speaker);
-  const others  = shuffle(CHARACTERS.filter(c => c.name !== q.speaker)).slice(0, 3);
-  const options = shuffle([correct, ...others]);
-
-  const grid = $('char-grid');
-  grid.innerHTML = '';
-  options.forEach(char => {
-    const btn = document.createElement('button');
-    btn.className = 'char-btn';
-    btn.style.borderColor = char.color;
-    btn.style.background  = char.bg;
-    btn.innerHTML = `
-      <div class="char-portrait" style="background:${char.bg};border-color:${char.color};">${char.emoji}</div>
-      <div class="char-name">${char.name}</div>`;
-    btn.dataset.name = char.name;
-    btn.onclick = () => choose(char.name, q.speaker, btn);
+  const grid=$('char-grid'); grid.innerHTML='';
+  options.forEach(char=>{
+    const btn=document.createElement('button');
+    btn.className='char-btn';
+    btn.style.borderColor=char.color; btn.style.background=char.bg;
+    btn.dataset.name=char.name;
+    btn.innerHTML=`<div class="char-portrait" style="border-color:${char.color};background:${char.bg};">${char.emoji}</div><div class="char-name">${char.name}</div>`;
+    addLeaves(btn);
+    btn.addEventListener('click',()=>choose(char.name,q.speaker,btn));
     grid.appendChild(btn);
   });
-
   startTimer();
 }
 
-function startTimer() {
-  clearInterval(timerInterval);
-  timeLeft = 20;
-  const bar = $('timer-fill');
-  bar.style.transition = 'none';
-  bar.style.width = '100%';
-  requestAnimationFrame(() => requestAnimationFrame(() => {
-    bar.style.transition = 'width 1s linear';
-    bar.style.width = '100%';
-  }));
-
-  timerInterval = setInterval(() => {
+function startTimer(){
+  clearInterval(timerInterval); timeLeft=20;
+  const bar=$('timer-fill');
+  bar.style.transition='none'; bar.style.width='100%';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{ bar.style.transition='width 1s linear'; }));
+  timerInterval=setInterval(()=>{
     timeLeft--;
-    const pct = Math.max(0, (timeLeft / 20) * 100);
-    bar.style.width = pct + '%';
-    if (timeLeft <= 0) { clearInterval(timerInterval); if (!answered) timeUp(); }
-  }, 1000);
+    bar.style.width=Math.max(0,(timeLeft/20)*100)+'%';
+    if(timeLeft<=0){clearInterval(timerInterval);if(!answered)timeUp();}
+  },1000);
 }
 
-function timeUp() {
-  answered = true;
-  streak = 0;
-  $('hud-streak').textContent = `🔥 0`;
-  const q = deck[qIdx];
-  missedQuotes.push(q);
-  showFeedback(false, `⏰ Time's up! The speaker was ${q.speaker}.`);
-  highlightCorrect(q.speaker);
-  disableButtons();
-  revealNext();
+function timeUp(){
+  answered=true; streak=0; $('hud-streak').textContent='🔥 0';
+  const q=deck[qIdx]; missedQuotes.push(q);
+  showFeedback(false,`⏰ Time's up! The speaker was ${q.speaker}.`);
+  highlightCorrect(q.speaker); disableButtons(); $('btn-next').classList.add('show');
 }
 
-function choose(selected, correct, btn) {
-  if (answered) return;
-  answered = true;
-  clearInterval(timerInterval);
-
-  const isRight = selected === correct;
-
-  if (isRight) {
-    streak++;
-    correctCount++;
-    if (streak > bestStreak) bestStreak = streak;
-    const bonus = streak >= 3 ? Math.floor(streak / 3) * 5 : 0;
-    score += 10 + bonus;
-    $('hud-score').textContent = score;
-    $('hud-streak').textContent = `🔥 ${streak}`;
-
-    btn.style.background   = 'rgba(46,204,113,.3)';
-    btn.style.borderColor  = '#2ecc71';
-    btn.style.boxShadow    = '0 0 18px rgba(46,204,113,.5)';
-
-    const card = $('quote-card');
-    card.classList.add('flash-green');
-    card.addEventListener('animationend', () => card.classList.remove('flash-green'), { once: true });
-
-    const bonusStr = bonus > 0 ? ` +${bonus} streak bonus!` : '';
-    showFeedback(true, pick(HIT_MSGS) + bonusStr);
+function choose(selected,correct,btn){
+  if(answered)return;
+  answered=true; clearInterval(timerInterval);
+  const ok=selected===correct;
+  if(ok){
+    streak++; correctCount++;
+    if(streak>bestStreak)bestStreak=streak;
+    const bonus=streak>=3?Math.floor(streak/3)*5:0;
+    score+=10+bonus;
+    $('hud-score').textContent=score; $('hud-streak').textContent=`🔥 ${streak}`;
+    btn.style.background='rgba(74,140,42,.28)'; btn.style.borderColor='#2d6b1a'; btn.style.boxShadow='0 0 16px rgba(74,140,42,.5)';
+    const card=$('quote-card');
+    card.classList.add('vine-glow');
+    card.addEventListener('animationend',()=>card.classList.remove('vine-glow'),{once:true});
+    showFeedback(true,rnd(HIT)+(bonus?` +${bonus} streak bonus!`:''));
+    updateTracker();
   } else {
-    streak = 0;
-    $('hud-streak').textContent = `🔥 0`;
-    missedQuotes.push(deck[qIdx]);
-
-    btn.style.background  = 'rgba(231,76,60,.3)';
-    btn.style.borderColor = '#e74c3c';
-
-    const card = $('quote-card');
+    streak=0; $('hud-streak').textContent='🔥 0'; missedQuotes.push(deck[qIdx]);
+    btn.style.background='rgba(192,57,43,.2)'; btn.style.borderColor='#c0392b';
+    const card=$('quote-card');
     card.classList.add('shake');
-    card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
-
-    showFeedback(false, `${pick(MISS_MSGS)} The speaker was ${correct}.`);
+    card.addEventListener('animationend',()=>card.classList.remove('shake'),{once:true});
+    showFeedback(false,rnd(MISS)+' The speaker was '+correct+'.');
     highlightCorrect(correct);
   }
-
-  disableButtons();
-  revealNext();
+  disableButtons(); $('btn-next').classList.add('show');
 }
 
-function highlightCorrect(name) {
-  document.querySelectorAll('.char-btn').forEach(btn => {
-    if (btn.dataset.name === name) {
-      btn.style.background  = 'rgba(46,204,113,.3)';
-      btn.style.borderColor = '#2ecc71';
-    }
+function highlightCorrect(name){
+  document.querySelectorAll('.char-btn').forEach(b=>{
+    if(b.dataset.name===name){b.style.background='rgba(74,140,42,.28)';b.style.borderColor='#2d6b1a';}
   });
 }
-function disableButtons() {
-  document.querySelectorAll('.char-btn').forEach(b => b.disabled = true);
+function disableButtons(){
+  document.querySelectorAll('.char-btn').forEach(b=>{
+    b.disabled=true;
+    b.querySelectorAll('.btn-leaf').forEach((leaf,i)=>{
+      const sc=SCATTER[i]||SCATTER[0];
+      leaf.style.transform=`translate(${sc.x}px,${sc.y}px) rotate(${sc.r}deg)`;
+      leaf.classList.add('scatter');
+    });
+  });
 }
-function revealNext() {
-  const btn = $('btn-next');
-  btn.textContent = (qIdx >= deck.length - 1) ? 'See Results →' : 'Next Quote →';
-  btn.classList.add('show');
+function showFeedback(ok,msg){
+  const fb=$('feedback');
+  fb.className=`feedback ${ok?'correct':'wrong'} show`;
+  fb.textContent=msg;
 }
-function showFeedback(ok, msg) {
-  const fb = $('feedback');
-  fb.className = `feedback ${ok ? 'correct' : 'wrong'} show`;
-  fb.textContent = msg;
-}
-function nextQuestion() {
+
+function nextQuestion(){
   qIdx++;
-  loadQuestion();
+  if(qIdx>0 && qIdx%5===0 && qIdx<deck.length){ showMiniGame(); }
+  else { loadQuestion(); }
 }
 
-// ─── RESULTS ────────────────────────────────────────────────────────────────
-function showResults() {
-  clearInterval(timerInterval);
+// ── GRAPE HARVEST ─────────────────────────────────────
+function showMiniGame(){
+  showScreen('minigame');
+  clearInterval(mgTimerInt);
+  const field=$('grape-field'); field.innerHTML='';
+  let bonus=0, t=6;
+  $('mg-timer').textContent=t; $('mg-live').textContent='+0 bonus pts';
+
+  // Spawn grapes
+  for(let i=0;i<12;i++){
+    const el=document.createElement('div');
+    el.className='grape-target'; el.textContent='🍇';
+    el.style.left=(4+Math.random()*84)+'%';
+    el.style.top=(4+Math.random()*72)+'%';
+    el.style.animationDelay=(Math.random()*1.8)+'s';
+    el.addEventListener('click',function(){
+      if(this.classList.contains('popped'))return;
+      this.classList.add('popped');
+      bonus+=3; score+=3;
+      $('mg-live').textContent=`+${bonus} bonus pts`;
+      $('hud-score').textContent=score;
+    });
+    field.appendChild(el);
+  }
+
+  mgTimerInt=setInterval(()=>{
+    t--;
+    $('mg-timer').textContent=Math.max(0,t);
+    if(t<=0){
+      clearInterval(mgTimerInt);
+      setTimeout(()=>{ showScreen('game'); loadQuestion(); },700);
+    }
+  },1000);
+}
+
+// ── RESULTS ───────────────────────────────────────────
+function showResults(){
+  clearInterval(timerInterval); clearInterval(mgTimerInt);
   showScreen('results');
+  const pct=correctCount/QUOTES.length;
+  let icon,name,desc;
+  if(pct>=.96){icon='🏆';name='Master Vintner';       desc='"Thou art the finest scholar in all of Messina\'s vineyard! Even Benedick falls silent."';}
+  else if(pct>=.80){icon='🌹';name='Knight of the Vine';   desc='"A fine harvest! Don Pedro himself would toast to thy scholarship."';}
+  else if(pct>=.65){icon='🍇';name='Friend of Beatrice';   desc='"Thou hast spirit and wit! A little more study shall make thee formidable."';}
+  else if(pct>=.50){icon='🌿';name='Vineyard Apprentice';  desc='"Thou pressed some grapes well — but others escaped thee. Review thy quotes!"';}
+  else if(pct>=.30){icon='🌱';name="Dogberry's Deputy";    desc='"Thou art not the most wit-full... but thou art sensible and fitting!"';}
+  else{icon='🗡️';name="Don John's Pawn";desc='"Thou hast been deceived at every turn. Return to the vineyard and study more!"';}
 
-  const pct = correctCount / QUOTES.length;
-  let icon, name, quote;
+  $('rank-icon').textContent=icon; $('rank-name').textContent=name; $('rank-desc').textContent=desc;
+  $('stat-score').textContent=score; $('stat-correct').textContent=`${correctCount}/${QUOTES.length}`; $('stat-streak').textContent=bestStreak;
 
-  if      (pct >= .96) { icon='🏆'; name='Master of Wit';        quote='"Thou art the very pinnacle of scholarship in Messina! Even Benedick is silenced."'; }
-  else if (pct >= .80) { icon='⚔️'; name='Knight of Messina';    quote='"A fine soldier of letters! Don Pedro himself would grant thee a position of honor."'; }
-  else if (pct >= .65) { icon='🌹'; name='Friend of Beatrice';    quote='"Thou hast spirit and wit! A little more study shall make thee formidable indeed."'; }
-  else if (pct >= .50) { icon='🎭'; name='Masquerade Guest';      quote='"Thou wore thy mask bravely, but some speakers eluded thee. Review thy quotes!"'; }
-  else if (pct >= .30) { icon='🐕'; name="Dogberry's Deputy";     quote='"Thou art not the most wit-full of scholars... but thou art sensible and fitting!"'; }
-  else                 { icon='🗡️'; name="Don John's Pawn";       quote='"Thou hast been deceived at every turn! Return to thy reading guide at once."'; }
+  if(missedQuotes.length>0){
+    $('review-section').style.display='block';
+    $('review-list').innerHTML=missedQuotes.map(q=>`
+      <div class="missed-item">
+        <div class="missed-q">${q.text.length>90?q.text.slice(0,90)+'…"':q.text}</div>
+        <div class="missed-a">Speaker: ${q.speaker} — ${q.act}</div>
+      </div>`).join('');
+  } else { $('review-section').style.display='none'; }
 
-  $('rank-icon').textContent  = icon;
-  $('rank-name').textContent  = name;
-  $('rank-quote').textContent = quote;
-  $('stat-score').textContent   = score;
-  $('stat-correct').textContent = `${correctCount}/${QUOTES.length}`;
-  $('stat-streak').textContent  = bestStreak;
-
-  // Missed quotes review
-  if (missedQuotes.length > 0) {
-    const section = $('review-section');
-    const list    = $('review-list');
-    section.style.display = 'block';
-    list.innerHTML = '';
-    missedQuotes.forEach(q => {
-      const short = q.text.length > 90 ? q.text.slice(0, 90) + '…"' : q.text;
-      list.innerHTML += `
-        <div class="missed-item">
-          <div class="m-quote">${short}</div>
-          <div class="m-answer">Speaker: ${q.speaker} — ${q.act}</div>
-        </div>`;
-    });
-  } else {
-    $('review-section').style.display = 'none';
-  }
-
-  if (pct >= .80) launchConfetti();
+  if(pct>=.80) launchConfetti();
 }
 
-function resetGame() {
-  showScreen('intro');
-}
-
-// ─── CONFETTI ────────────────────────────────────────────────────────────────
-function launchConfetti() {
-  const canvas = $('confetti-canvas');
-  const ctx = canvas.getContext('2d');
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-
-  const colors = ['#d4af37','#f0d878','#c0392b','#8e44ad','#2980b9','#27ae60','#f39c12','#e91e8c'];
-  const pieces = Array.from({ length: 120 }, () => ({
-    x: Math.random() * canvas.width,
-    y: Math.random() * -canvas.height,
-    r: Math.random() * 7 + 3,
-    d: Math.random() * 4 + 2,
-    color: pick(colors),
-    tilt: Math.random() * 20 - 10,
-    tiltSpeed: Math.random() * .1 + .05,
-    tiltAngle: 0,
+// ── CONFETTI ──────────────────────────────────────────
+function launchConfetti(){
+  const canvas=$('confetti-canvas'), ctx=canvas.getContext('2d');
+  canvas.width=window.innerWidth; canvas.height=window.innerHeight;
+  const colors=['#c8941a','#e8c040','#c0392b','#7d3c98','#2471a3','#1e8449','#4a8c2a','#c0166b'];
+  const pieces=Array.from({length:130},()=>({
+    x:Math.random()*canvas.width, y:Math.random()*-canvas.height,
+    r:Math.random()*7+3, d:Math.random()*4+2,
+    color:rnd(colors), tiltAngle:0, tiltSpeed:Math.random()*.1+.05, tilt:0
   }));
-
-  let frame = 0;
-  function draw() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    pieces.forEach(p => {
-      p.tiltAngle += p.tiltSpeed;
-      p.y += p.d;
-      p.tilt = Math.sin(p.tiltAngle) * 15;
-      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
-      ctx.beginPath();
-      ctx.lineWidth = p.r;
-      ctx.strokeStyle = p.color;
-      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
-      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
-      ctx.stroke();
+  let frame=0;
+  (function draw(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    pieces.forEach(p=>{
+      p.tiltAngle+=p.tiltSpeed; p.y+=p.d; p.tilt=Math.sin(p.tiltAngle)*14;
+      if(p.y>canvas.height){p.y=-10;p.x=Math.random()*canvas.width;}
+      ctx.beginPath(); ctx.lineWidth=p.r; ctx.strokeStyle=p.color;
+      ctx.moveTo(p.x+p.tilt+p.r/2,p.y); ctx.lineTo(p.x+p.tilt,p.y+p.tilt+p.r/2); ctx.stroke();
     });
-    frame++;
-    if (frame < 250) requestAnimationFrame(draw);
-    else ctx.clearRect(0, 0, canvas.width, canvas.height);
-  }
-  draw();
+    if(++frame<260) requestAnimationFrame(draw);
+    else ctx.clearRect(0,0,canvas.width,canvas.height);
+  })();
 }
 
-// ─── WIRE UP BUTTONS (no inline onclick — works everywhere) ──────────────────
-document.addEventListener('DOMContentLoaded', function () {
+// ── WIRE UP ───────────────────────────────────────────
+document.addEventListener('DOMContentLoaded',function(){
   document.getElementById('btn-start').addEventListener('click', startGame);
-  document.getElementById('btn-next').addEventListener('click', nextQuestion);
+  document.getElementById('btn-next').addEventListener('click',  nextQuestion);
   document.getElementById('btn-again').addEventListener('click', resetGame);
+  buildTracker();
 });
+function resetGame(){ showScreen('intro'); }
 </script>
 </body>
 </html>
