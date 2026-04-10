@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Masquerade at Messina — Much Ado About Nothing</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap');
+
+:root {
+  --bg-dark: #0a0400;
+  --bg-mid: #160800;
+  --parchment: #f0deb4;
+  --parchment-dim: #b8a070;
+  --gold: #d4af37;
+  --gold-light: #f0d878;
+  --card-bg: rgba(18, 8, 0, 0.88);
+  --correct-green: #2ecc71;
+  --wrong-red: #e74c3c;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  min-height: 100vh;
+  background: var(--bg-dark);
+  background-image:
+    radial-gradient(ellipse 100% 50% at 50% 0%, #2d1000 0%, transparent 65%),
+    radial-gradient(ellipse 60% 40% at 0% 100%, #1a0800 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 100% 100%, #1a0800 0%, transparent 55%);
+  font-family: 'Crimson Text', Georgia, serif;
+  color: var(--parchment);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  overflow-x: hidden;
+}
+
+/* Starfield */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(1px 1px at 8%  12%, rgba(255,220,80,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 23% 35%, rgba(255,220,80,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 38%  8%, rgba(255,220,80,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 55% 22%, rgba(255,220,80,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 15%, rgba(255,220,80,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 85% 40%, rgba(255,220,80,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 92% 68%, rgba(255,220,80,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 18% 72%, rgba(255,220,80,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 65% 80%, rgba(255,220,80,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44% 90%, rgba(255,220,80,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 78% 55%, rgba(255,220,80,.3) 0%, transparent 100%),
+    radial-gradient(1px 1px at 32% 58%, rgba(255,220,80,.5) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#app { position: relative; z-index: 1; width: 100%; max-width: 820px; }
+
+/* ── SCREENS ── */
+.screen { display: none; }
+.screen.active { display: block; }
+
+/* ── SHARED CARD ── */
+.panel {
+  background: var(--card-bg);
+  border: 2px solid var(--gold);
+  border-radius: 6px;
+  box-shadow: 0 0 50px rgba(212,175,55,.18), inset 0 0 40px rgba(0,0,0,.5);
+  position: relative;
+}
+.panel::before { content: '❧'; position: absolute; top: 10px; left: 14px; color: var(--gold); opacity: .4; font-size: 18px; }
+.panel::after  { content: '❧'; position: absolute; bottom: 10px; right: 14px; color: var(--gold); opacity: .4; font-size: 18px; transform: rotate(180deg); }
+
+/* ── INTRO ── */
+#intro { text-align: center; padding: 30px 16px; }
+.intro-deco { font-size: 56px; margin-bottom: 12px; animation: bob 3s ease-in-out infinite; }
+@keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+
+.game-title {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.5rem, 5vw, 2.7rem);
+  color: var(--gold);
+  text-shadow: 0 0 24px rgba(212,175,55,.55), 0 2px 6px rgba(0,0,0,.9);
+  line-height: 1.2;
+  margin-bottom: 6px;
+}
+.game-subtitle {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(.8rem, 2.2vw, 1.05rem);
+  color: var(--parchment-dim);
+  letter-spacing: 3px;
+  margin-bottom: 26px;
+}
+
+.intro-panel {
+  padding: 28px 28px 32px;
+  margin: 0 auto 0;
+  max-width: 620px;
+}
+.intro-flavor {
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--parchment);
+  margin-bottom: 22px;
+}
+.how-to {
+  text-align: left;
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 4px;
+  padding: 16px 22px;
+  margin-bottom: 26px;
+}
+.how-to h3 {
+  font-family: 'Cinzel', serif;
+  font-size: .85rem;
+  letter-spacing: 2px;
+  color: var(--gold);
+  margin-bottom: 12px;
+  text-transform: uppercase;
+}
+.how-to li { list-style: none; padding: 3px 0; font-size: 1rem; line-height: 1.5; }
+.how-to li::before { content: '⚜ '; color: var(--gold); }
+
+.btn-gold {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #0a0400;
+  background: linear-gradient(135deg, #b8870f 0%, var(--gold-light) 50%, #b8870f 100%);
+  border: none;
+  padding: 13px 38px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .2s;
+  box-shadow: 0 4px 18px rgba(212,175,55,.45);
+}
+.btn-gold:hover { transform: translateY(-2px); box-shadow: 0 7px 28px rgba(212,175,55,.6); }
+.btn-gold:active { transform: translateY(0); }
+
+/* ── GAME ── */
+#game { padding: 8px 0; }
+
+.hud {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px;
+  background: rgba(0,0,0,.45);
+  border: 1px solid rgba(212,175,55,.25);
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+.hud-stat { display: flex; flex-direction: column; }
+.hud-stat.right { align-items: flex-end; }
+.hud-label { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: 2px; color: var(--parchment-dim); text-transform: uppercase; }
+.hud-value { font-family: 'Cinzel', serif; font-size: 1.1rem; color: var(--gold); }
+.hud-center { font-family: 'Cinzel', serif; font-size: .85rem; color: var(--parchment-dim); text-align: center; line-height: 1.4; }
+
+/* Progress + Timer bars */
+.bar-row { height: 6px; background: rgba(0,0,0,.5); border: 1px solid rgba(212,175,55,.15); border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+.bar-fill { height: 100%; border-radius: 3px; transition: width .45s ease; }
+#progress-fill { background: linear-gradient(90deg, var(--gold), var(--gold-light)); }
+#timer-fill { background: linear-gradient(90deg, #e74c3c 0%, #f39c12 50%, #27ae60 100%); transition: width 1s linear; }
+
+/* Quote card */
+.quote-card {
+  padding: 28px 32px 24px;
+  margin-bottom: 14px;
+  text-align: center;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+}
+.quote-card::before { content: '\201C'; font-size: 72px; opacity: .12; font-family: Georgia,serif; line-height:1; top: 4px; left: 14px; }
+.quote-card::after  { content: '\201D'; font-size: 72px; opacity: .12; font-family: Georgia,serif; line-height:1; bottom: -12px; right: 14px; }
+
+.act-tag {
+  font-family: 'Cinzel', serif;
+  font-size: .7rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--parchment-dim);
+}
+.ornament { color: var(--gold); opacity: .45; font-size: 1rem; letter-spacing: 10px; }
+.quote-text {
+  font-style: italic;
+  font-size: clamp(1rem, 2.4vw, 1.18rem);
+  line-height: 1.75;
+  color: var(--parchment);
+  padding: 0 10px;
+}
+.who-prompt {
+  font-family: 'Cinzel', serif;
+  font-size: .72rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 4px;
+}
+
+/* Character grid */
+.char-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 12px;
+}
+@media (min-width: 480px) { .char-grid { grid-template-columns: repeat(4, 1fr); } }
+
+.char-btn {
+  background: rgba(15,6,0,.8);
+  border: 2px solid;
+  border-radius: 5px;
+  padding: 14px 8px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+.char-btn:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 8px 22px rgba(0,0,0,.5); }
+.char-btn:disabled { cursor: default; }
+
+.char-portrait {
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 26px;
+}
+.char-name {
+  font-family: 'Cinzel', serif;
+  font-size: .7rem;
+  letter-spacing: .5px;
+  color: var(--parchment);
+  text-align: center;
+  line-height: 1.3;
+}
+
+/* Feedback bar */
+.feedback {
+  border-radius: 4px;
+  padding: 12px 16px;
+  font-size: 1rem;
+  min-height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  transition: opacity .25s;
+  opacity: 0;
+}
+.feedback.show { opacity: 1; }
+.feedback.correct { background: rgba(46,204,113,.2); border: 1px solid var(--correct-green); color: #a8f5b8; }
+.feedback.wrong   { background: rgba(231,76,60,.2);  border: 1px solid var(--wrong-red);   color: #f5a8a8; }
+
+.next-area { text-align: center; min-height: 44px; }
+.btn-next {
+  font-family: 'Cinzel', serif;
+  font-size: .85rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: #0a0400;
+  background: linear-gradient(135deg, #b8870f, var(--gold-light), #b8870f);
+  border: none;
+  padding: 10px 32px;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all .2s;
+  opacity: 0;
+  pointer-events: none;
+}
+.btn-next.show { opacity: 1; pointer-events: all; }
+.btn-next:hover { transform: translateY(-2px); box-shadow: 0 5px 18px rgba(212,175,55,.45); }
+
+/* ── RESULTS ── */
+#results { text-align: center; padding: 24px 16px; }
+.results-panel { padding: 36px 28px; max-width: 600px; margin: 0 auto; }
+.results-title { font-family: 'Cinzel Decorative', serif; font-size: clamp(1.3rem, 4vw, 1.9rem); color: var(--gold); margin-bottom: 6px; }
+.rank-icon { font-size: 72px; margin: 16px 0; animation: throb 2s ease-in-out infinite; }
+@keyframes throb { 0%,100%{transform:scale(1)} 50%{transform:scale(1.08)} }
+.rank-name { font-family: 'Cinzel', serif; font-size: 1.35rem; color: var(--gold-light); margin-bottom: 6px; }
+.rank-quote { font-style: italic; color: var(--parchment-dim); font-size: 1.05rem; line-height: 1.6; margin-bottom: 22px; padding: 0 10px; }
+
+.stats-row { display: flex; justify-content: center; gap: 32px; margin-bottom: 24px; }
+.stat-box { text-align: center; }
+.stat-val { font-family: 'Cinzel', serif; font-size: 2rem; color: var(--gold); }
+.stat-lbl { font-family: 'Cinzel', serif; font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--parchment-dim); margin-top: 2px; }
+
+hr.divider { border: none; border-top: 1px solid rgba(212,175,55,.25); margin: 18px 0; }
+
+/* Missed quotes review */
+.review-section { text-align: left; margin-bottom: 20px; }
+.review-title { font-family: 'Cinzel', serif; font-size: .8rem; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 12px; }
+.missed-item { background: rgba(0,0,0,.3); border-left: 3px solid var(--wrong-red); padding: 8px 12px; margin-bottom: 8px; border-radius: 0 4px 4px 0; }
+.missed-item .m-quote { font-style: italic; font-size: .9rem; color: var(--parchment-dim); margin-bottom: 4px; }
+.missed-item .m-answer { font-family: 'Cinzel', serif; font-size: .75rem; color: var(--correct-green); letter-spacing: 1px; }
+
+/* ── ANIMATIONS ── */
+@keyframes slideUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+.slide-up { animation: slideUp .4s ease forwards; }
+
+@keyframes shake { 0%,100%{transform:translateX(0)} 20%{transform:translateX(-8px)} 40%{transform:translateX(8px)} 60%{transform:translateX(-5px)} 80%{transform:translateX(5px)} }
+.shake { animation: shake .4s ease; }
+
+@keyframes flashGreen { 0%{box-shadow:0 0 0 rgba(46,204,113,0)} 40%{box-shadow:0 0 30px rgba(46,204,113,.5), inset 0 0 20px rgba(46,204,113,.1)} 100%{box-shadow:0 0 0 rgba(46,204,113,0)} }
+.flash-green { animation: flashGreen .7s ease; }
+
+/* Confetti canvas */
+#confetti-canvas { position: fixed; inset: 0; pointer-events: none; z-index: 999; }
+</style>
+</head>
+<body>
+<canvas id="confetti-canvas"></canvas>
+<div id="app">
+
+  <!-- ══════════ INTRO ══════════ -->
+  <div id="intro" class="screen active">
+    <div class="intro-deco">🎭</div>
+    <h1 class="game-title">The Masquerade<br>at Messina</h1>
+    <h2 class="game-subtitle">A Much Ado About Nothing Quote Quiz</h2>
+    <div class="panel intro-panel">
+      <p class="intro-flavor">
+        Don John's treachery has thrown Messina into chaos — and scrambled the words of every character with it!
+        Can you unmask each speaker and restore order before time runs out?
+      </p>
+      <div class="how-to">
+        <h3>⚜ &nbsp; How to Play &nbsp; ⚜</h3>
+        <ul>
+          <li>A quote from the play appears on screen</li>
+          <li>Select the character who spoke those words</li>
+          <li>You have <strong>20 seconds</strong> per quote</li>
+          <li>Build a streak of 3+ for bonus points!</li>
+          <li>All 25 quotes from your study guide are here</li>
+        </ul>
+      </div>
+      <button class="btn-gold" onclick="startGame()">Begin the Masquerade</button>
+    </div>
+  </div>
+
+  <!-- ══════════ GAME ══════════ -->
+  <div id="game" class="screen">
+    <div class="hud">
+      <div class="hud-stat">
+        <span class="hud-label">Score</span>
+        <span class="hud-value" id="hud-score">0</span>
+      </div>
+      <div class="hud-center" id="hud-progress">Question 1 of 25</div>
+      <div class="hud-stat right">
+        <span class="hud-label">Streak</span>
+        <span class="hud-value" id="hud-streak">🔥 0</span>
+      </div>
+    </div>
+
+    <div class="bar-row"><div class="bar-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="bar-row"><div class="bar-fill" id="timer-fill" style="width:100%"></div></div>
+
+    <div class="panel quote-card" id="quote-card">
+      <div class="act-tag" id="act-tag">Act 1, Scene 1</div>
+      <div class="ornament">— ❦ —</div>
+      <p class="quote-text" id="quote-text"></p>
+      <p class="who-prompt">Who spoke these words?</p>
+    </div>
+
+    <div class="char-grid" id="char-grid"></div>
+
+    <div class="feedback" id="feedback"></div>
+    <div class="next-area">
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Quote →</button>
+    </div>
+  </div>
+
+  <!-- ══════════ RESULTS ══════════ -->
+  <div id="results" class="screen">
+    <div class="panel results-panel slide-up">
+      <h2 class="results-title">The Curtain Falls</h2>
+      <div class="ornament" style="font-size:1.4rem;letter-spacing:14px;opacity:.5;">— ❦ ❧ ❦ —</div>
+      <div class="rank-icon" id="rank-icon">🎭</div>
+      <div class="rank-name" id="rank-name">Master of Wit</div>
+      <div class="rank-quote" id="rank-quote"></div>
+      <div class="stats-row">
+        <div class="stat-box"><div class="stat-val" id="stat-score">0</div><div class="stat-lbl">Score</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-correct">0/25</div><div class="stat-lbl">Correct</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-streak">0</div><div class="stat-lbl">Best Streak</div></div>
+      </div>
+      <hr class="divider">
+      <div id="review-section" class="review-section" style="display:none">
+        <div class="review-title">Quotes to Review</div>
+        <div id="review-list"></div>
+        <hr class="divider">
+      </div>
+      <button class="btn-gold" onclick="resetGame()">Play Again</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ─── DATA ───────────────────────────────────────────────────────────────────
+const QUOTES = [
+  { text: '"There\'s a skirmish of wit between them."', speaker: 'Leonato', act: 'Act 1, Scene 1' },
+  { text: '"God help the noble Claudio! If he have caught the Benedick, it will cost him a thousand pound ere he be cured."', speaker: 'Beatrice', act: 'Act 1, Scene 1' },
+  { text: '"I had rather hear my dog bark at a crow, than a man swear he loves me."', speaker: 'Beatrice', act: 'Act 1, Scene 1' },
+  { text: '"I will assume thy part in some disguise / And tell fair Hero I am Claudio, / And in her bosom I\'ll unclasp my heart / And take her hearing prisoner with the force / And strong encounter of my amorous tale."', speaker: 'Don Pedro', act: 'Act 1, Scene 1' },
+  { text: '"This may prove food to my displeasure. That young start-up hath all the glory of my overthrow. If I can cross him any way, I bless myself every way."', speaker: 'Don John', act: 'Act 1, Scene 3' },
+  { text: '"Let me be that I am and seek not to alter me."', speaker: 'Don John', act: 'Act 1, Scene 3' },
+  { text: '"He that hath a beard is more than a youth, and he that hath no beard is less than a man: and he that is more than a youth is not for me, and he that is less than a man, I am not for him."', speaker: 'Beatrice', act: 'Act 2, Scene 1' },
+  { text: '"Yes, faith, it is [my cousin\'s] duty to make curtsy and say, \'Father as it please you.\' But yet for all that, [cousin], let him be a handsome fellow, or else make another curtsy and say, \'Father, as it please me.\'"', speaker: 'Beatrice', act: 'Act 2, Scene 1' },
+  { text: '"I will in the interim undertake one of Hercules\' labors, which is to bring Signior Benedick and the Lady Beatrice into a mountain of affection, th\' one with th\' other."', speaker: 'Don Pedro', act: 'Act 2, Scene 1' },
+  { text: '"\'Tis certain so, the Prince woos for himself. / Friendship is constant in all other things / Save in the office and affairs of love. / Therefore all hearts in love use their own tongues. / Let every eye negotiate for itself / And trust no agent."', speaker: 'Claudio', act: 'Act 2, Scene 1' },
+  { text: '"They say the lady is fair. \'Tis a truth, I can bear them witness. And virtuous—\'tis so, I cannot reprove it. And wise, but for loving me. By my troth, it is no addition to her wit—nor no great argument of her folly, for I will be horribly in love with her."', speaker: 'Benedick', act: 'Act 2, Scene 3' },
+  { text: '"When I said I would die a bachelor, I did not think I should live till I were married."', speaker: 'Benedick', act: 'Act 2, Scene 3' },
+  { text: '"Some Cupid kills with arrows, some with traps."', speaker: 'Hero', act: 'Act 3, Scene 1' },
+  { text: '"Stand I condemned for pride and scorn so much? / Contempt, farewell, and maiden pride, adieu!"', speaker: 'Beatrice', act: 'Act 3, Scene 1' },
+  { text: '"If I see anything tonight why I should not marry her, tomorrow in the congregation, where I should wed, there will I shame her."', speaker: 'Claudio', act: 'Act 3, Scene 2' },
+  { text: '"God give me joy to wear it, for my heart is exceeding heavy."', speaker: 'Hero', act: 'Act 3, Scene 4' },
+  { text: '"There, Leonato, take her back again. Give not this rotten orange to your friend. She\'s but the sign and semblance of her honor. O, what authority and show of truth can cunning sin cover itself withal!"', speaker: 'Claudio', act: 'Act 4, Scene 1' },
+  { text: '"Your daughter here the princes left for dead. / Let her awhile be secretly kept in, / And publish it that she is dead indeed."', speaker: 'Friar Francis', act: 'Act 4, Scene 1' },
+  { text: '"O God, that I were a man! I would eat his heart in the marketplace."', speaker: 'Beatrice', act: 'Act 4, Scene 1' },
+  { text: '"I love you with so much of my heart that none is left to protest."', speaker: 'Beatrice', act: 'Act 4, Scene 1' },
+  { text: '"O Hero! What a Hero hadst thou been / If half thy outward graces had been placed / About thy thoughts and counsels of thy heart! / But fare thee well, most foul, most fair, farewell / Thou pure impiety and impious purity."', speaker: 'Claudio', act: 'Act 4, Scene 1' },
+  { text: '"Thou hast killed my child. / If thou kill\'st me, boy, thou shalt kill a man."', speaker: 'Leonato', act: 'Act 5, Scene 1' },
+  { text: '"And since you could not be my son-in-law, / Be yet my nephew. My brother hath a daughter, / Almost the copy of my child that\'s dead, / And she alone is heir to both of us."', speaker: 'Leonato', act: 'Act 5, Scene 1' },
+  { text: '"For which of my bad parts didst thou first fall in love with me?"', speaker: 'Benedick', act: 'Act 5, Scene 2' },
+  { text: '"Thou and I are too wise to woo peaceably."', speaker: 'Benedick', act: 'Act 5, Scene 2' },
+];
+
+const CHARACTERS = [
+  { name: 'Beatrice',      emoji: '🌹', color: '#c0392b', bg: 'rgba(192,57,43,.22)' },
+  { name: 'Benedick',     emoji: '⚔️', color: '#2980b9', bg: 'rgba(41,128,185,.22)' },
+  { name: 'Claudio',      emoji: '🌿', color: '#27ae60', bg: 'rgba(39,174,96,.22)'  },
+  { name: 'Don Pedro',    emoji: '👑', color: '#8e44ad', bg: 'rgba(142,68,173,.22)' },
+  { name: 'Don John',     emoji: '🗡️', color: '#636e72', bg: 'rgba(99,110,114,.22)' },
+  { name: 'Hero',         emoji: '🌸', color: '#d81b60', bg: 'rgba(216,27,96,.22)'  },
+  { name: 'Leonato',      emoji: '🏛️', color: '#d4ac0d', bg: 'rgba(212,172,13,.22)' },
+  { name: 'Friar Francis',emoji: '✝️', color: '#95a5a6', bg: 'rgba(149,165,166,.22)'},
+];
+
+const HIT_MSGS = [
+  '🎯 Well said! Thou hast sharp ears!',
+  '✨ By my troth — thou knowest thy play!',
+  '👏 Even Benedick would applaud thee!',
+  '🌟 Hark! A true scholar of Messina!',
+  '🎭 Thou hast unmask\'d the speaker!',
+  '⚔️ Right as rain in fair Messina!',
+  '🌸 Hero herself smiles upon thee!',
+  '🏆 Verily! Thou art no fool here!',
+];
+const MISS_MSGS = [
+  'Alas! Thou hast been deceived, as Claudio was.',
+  'Nay! Don John himself could not have done worse.',
+  'Zounds! Even Dogberry might have known that one.',
+  'By my sword — thou art quite mistaken!',
+  'Methinks thou needest more study in Messina.',
+  'Thou hast worn the wrong mask this night!',
+];
+
+// ─── STATE ──────────────────────────────────────────────────────────────────
+let deck = [], qIdx = 0, score = 0, streak = 0, bestStreak = 0;
+let correctCount = 0, answered = false;
+let timerInterval = null, timeLeft = 20;
+let missedQuotes = [];
+
+// ─── HELPERS ────────────────────────────────────────────────────────────────
+function shuffle(arr) {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+function pick(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
+function $(id) { return document.getElementById(id); }
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  $(id).classList.add('active');
+}
+
+// ─── GAME FLOW ───────────────────────────────────────────────────────────────
+function startGame() {
+  deck = shuffle(QUOTES);
+  qIdx = 0; score = 0; streak = 0; bestStreak = 0;
+  correctCount = 0; missedQuotes = [];
+  showScreen('game');
+  loadQuestion();
+}
+
+function loadQuestion() {
+  if (qIdx >= deck.length) { showResults(); return; }
+
+  answered = false;
+  const q = deck[qIdx];
+
+  // HUD
+  $('hud-score').textContent = score;
+  $('hud-progress').textContent = `Question ${qIdx + 1} of ${deck.length}`;
+  $('hud-streak').textContent = `🔥 ${streak}`;
+  $('progress-fill').style.width = ((qIdx / deck.length) * 100) + '%';
+
+  // Quote
+  $('act-tag').textContent = q.act;
+  $('quote-text').textContent = q.text;
+
+  // Feedback + next
+  const fb = $('feedback');
+  fb.className = 'feedback';
+  fb.textContent = '';
+  $('btn-next').classList.remove('show');
+
+  // Build character options: correct + 3 random distractors
+  const correct = CHARACTERS.find(c => c.name === q.speaker);
+  const others  = shuffle(CHARACTERS.filter(c => c.name !== q.speaker)).slice(0, 3);
+  const options = shuffle([correct, ...others]);
+
+  const grid = $('char-grid');
+  grid.innerHTML = '';
+  options.forEach(char => {
+    const btn = document.createElement('button');
+    btn.className = 'char-btn';
+    btn.style.borderColor = char.color;
+    btn.style.background  = char.bg;
+    btn.innerHTML = `
+      <div class="char-portrait" style="background:${char.bg};border-color:${char.color};">${char.emoji}</div>
+      <div class="char-name">${char.name}</div>`;
+    btn.dataset.name = char.name;
+    btn.onclick = () => choose(char.name, q.speaker, btn);
+    grid.appendChild(btn);
+  });
+
+  startTimer();
+}
+
+function startTimer() {
+  clearInterval(timerInterval);
+  timeLeft = 20;
+  const bar = $('timer-fill');
+  bar.style.transition = 'none';
+  bar.style.width = '100%';
+  requestAnimationFrame(() => requestAnimationFrame(() => {
+    bar.style.transition = 'width 1s linear';
+    bar.style.width = '100%';
+  }));
+
+  timerInterval = setInterval(() => {
+    timeLeft--;
+    const pct = Math.max(0, (timeLeft / 20) * 100);
+    bar.style.width = pct + '%';
+    if (timeLeft <= 0) { clearInterval(timerInterval); if (!answered) timeUp(); }
+  }, 1000);
+}
+
+function timeUp() {
+  answered = true;
+  streak = 0;
+  $('hud-streak').textContent = `🔥 0`;
+  const q = deck[qIdx];
+  missedQuotes.push(q);
+  showFeedback(false, `⏰ Time's up! The speaker was ${q.speaker}.`);
+  highlightCorrect(q.speaker);
+  disableButtons();
+  revealNext();
+}
+
+function choose(selected, correct, btn) {
+  if (answered) return;
+  answered = true;
+  clearInterval(timerInterval);
+
+  const isRight = selected === correct;
+
+  if (isRight) {
+    streak++;
+    correctCount++;
+    if (streak > bestStreak) bestStreak = streak;
+    const bonus = streak >= 3 ? Math.floor(streak / 3) * 5 : 0;
+    score += 10 + bonus;
+    $('hud-score').textContent = score;
+    $('hud-streak').textContent = `🔥 ${streak}`;
+
+    btn.style.background   = 'rgba(46,204,113,.3)';
+    btn.style.borderColor  = '#2ecc71';
+    btn.style.boxShadow    = '0 0 18px rgba(46,204,113,.5)';
+
+    const card = $('quote-card');
+    card.classList.add('flash-green');
+    card.addEventListener('animationend', () => card.classList.remove('flash-green'), { once: true });
+
+    const bonusStr = bonus > 0 ? ` +${bonus} streak bonus!` : '';
+    showFeedback(true, pick(HIT_MSGS) + bonusStr);
+  } else {
+    streak = 0;
+    $('hud-streak').textContent = `🔥 0`;
+    missedQuotes.push(deck[qIdx]);
+
+    btn.style.background  = 'rgba(231,76,60,.3)';
+    btn.style.borderColor = '#e74c3c';
+
+    const card = $('quote-card');
+    card.classList.add('shake');
+    card.addEventListener('animationend', () => card.classList.remove('shake'), { once: true });
+
+    showFeedback(false, `${pick(MISS_MSGS)} The speaker was ${correct}.`);
+    highlightCorrect(correct);
+  }
+
+  disableButtons();
+  revealNext();
+}
+
+function highlightCorrect(name) {
+  document.querySelectorAll('.char-btn').forEach(btn => {
+    if (btn.dataset.name === name) {
+      btn.style.background  = 'rgba(46,204,113,.3)';
+      btn.style.borderColor = '#2ecc71';
+    }
+  });
+}
+function disableButtons() {
+  document.querySelectorAll('.char-btn').forEach(b => b.disabled = true);
+}
+function revealNext() {
+  const btn = $('btn-next');
+  btn.textContent = (qIdx >= deck.length - 1) ? 'See Results →' : 'Next Quote →';
+  btn.classList.add('show');
+}
+function showFeedback(ok, msg) {
+  const fb = $('feedback');
+  fb.className = `feedback ${ok ? 'correct' : 'wrong'} show`;
+  fb.textContent = msg;
+}
+function nextQuestion() {
+  qIdx++;
+  loadQuestion();
+}
+
+// ─── RESULTS ────────────────────────────────────────────────────────────────
+function showResults() {
+  clearInterval(timerInterval);
+  showScreen('results');
+
+  const pct = correctCount / QUOTES.length;
+  let icon, name, quote;
+
+  if      (pct >= .96) { icon='🏆'; name='Master of Wit';        quote='"Thou art the very pinnacle of scholarship in Messina! Even Benedick is silenced."'; }
+  else if (pct >= .80) { icon='⚔️'; name='Knight of Messina';    quote='"A fine soldier of letters! Don Pedro himself would grant thee a position of honor."'; }
+  else if (pct >= .65) { icon='🌹'; name='Friend of Beatrice';    quote='"Thou hast spirit and wit! A little more study shall make thee formidable indeed."'; }
+  else if (pct >= .50) { icon='🎭'; name='Masquerade Guest';      quote='"Thou wore thy mask bravely, but some speakers eluded thee. Review thy quotes!"'; }
+  else if (pct >= .30) { icon='🐕'; name="Dogberry's Deputy";     quote='"Thou art not the most wit-full of scholars... but thou art sensible and fitting!"'; }
+  else                 { icon='🗡️'; name="Don John's Pawn";       quote='"Thou hast been deceived at every turn! Return to thy reading guide at once."'; }
+
+  $('rank-icon').textContent  = icon;
+  $('rank-name').textContent  = name;
+  $('rank-quote').textContent = quote;
+  $('stat-score').textContent   = score;
+  $('stat-correct').textContent = `${correctCount}/${QUOTES.length}`;
+  $('stat-streak').textContent  = bestStreak;
+
+  // Missed quotes review
+  if (missedQuotes.length > 0) {
+    const section = $('review-section');
+    const list    = $('review-list');
+    section.style.display = 'block';
+    list.innerHTML = '';
+    missedQuotes.forEach(q => {
+      const short = q.text.length > 90 ? q.text.slice(0, 90) + '…"' : q.text;
+      list.innerHTML += `
+        <div class="missed-item">
+          <div class="m-quote">${short}</div>
+          <div class="m-answer">Speaker: ${q.speaker} — ${q.act}</div>
+        </div>`;
+    });
+  } else {
+    $('review-section').style.display = 'none';
+  }
+
+  if (pct >= .80) launchConfetti();
+}
+
+function resetGame() {
+  showScreen('intro');
+}
+
+// ─── CONFETTI ────────────────────────────────────────────────────────────────
+function launchConfetti() {
+  const canvas = $('confetti-canvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width  = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  const colors = ['#d4af37','#f0d878','#c0392b','#8e44ad','#2980b9','#27ae60','#f39c12','#e91e8c'];
+  const pieces = Array.from({ length: 120 }, () => ({
+    x: Math.random() * canvas.width,
+    y: Math.random() * -canvas.height,
+    r: Math.random() * 7 + 3,
+    d: Math.random() * 4 + 2,
+    color: pick(colors),
+    tilt: Math.random() * 20 - 10,
+    tiltSpeed: Math.random() * .1 + .05,
+    tiltAngle: 0,
+  }));
+
+  let frame = 0;
+  function draw() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    pieces.forEach(p => {
+      p.tiltAngle += p.tiltSpeed;
+      p.y += p.d;
+      p.tilt = Math.sin(p.tiltAngle) * 15;
+      if (p.y > canvas.height) { p.y = -10; p.x = Math.random() * canvas.width; }
+      ctx.beginPath();
+      ctx.lineWidth = p.r;
+      ctx.strokeStyle = p.color;
+      ctx.moveTo(p.x + p.tilt + p.r / 2, p.y);
+      ctx.lineTo(p.x + p.tilt, p.y + p.tilt + p.r / 2);
+      ctx.stroke();
+    });
+    frame++;
+    if (frame < 250) requestAnimationFrame(draw);
+    else ctx.clearRect(0, 0, canvas.width, canvas.height);
+  }
+  draw();
+}
+</script>
+</body>
+</html>
