@@ -277,6 +277,85 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
 @keyframes correctGlow{0%{box-shadow:0 0 0 0 rgba(39,102,46,.45)}100%{box-shadow:0 0 0 18px rgba(39,102,46,0)}}
 .correct-glow{animation:correctGlow .7s ease}
 
+/* ── AMBIENT FLOATING STORY ELEMENTS ── */
+#ambient{position:fixed;inset:0;z-index:3;pointer-events:none;overflow:hidden}
+.amb{position:absolute;pointer-events:none;animation:ambDrift linear infinite;line-height:1}
+@keyframes ambDrift{
+  0%  {opacity:0;transform:translateY(108vh) rotate(0deg)}
+  7%  {opacity:var(--op)}
+  88% {opacity:calc(var(--op) * .65)}
+  100%{opacity:0;transform:translateY(-14vh) rotate(var(--rot))}
+}
+/* Stars twinkling in scene sky */
+.sky-star{position:absolute;border-radius:50%;background:#fff8c8;animation:twinkle var(--td) ease-in-out infinite;animation-delay:var(--tdelay)}
+@keyframes twinkle{0%,100%{opacity:.08}50%{opacity:.42}}
+
+/* ── CHARACTER ROLE SUBTITLE ── */
+.char-role{font-size:.52rem;font-style:italic;color:var(--text-soft);text-align:center;line-height:1.2;position:relative;z-index:1;margin-top:-2px;padding:0 2px}
+
+/* ── PANEL CORNER VINE ORNAMENTS ── */
+.corner-vine{position:absolute;font-size:1.1rem;opacity:.18;pointer-events:none;line-height:1;color:var(--vine)}
+.corner-vine.tl{top:7px;left:10px;transform:rotate(-20deg)}
+.corner-vine.br{bottom:7px;right:10px;transform:rotate(160deg)}
+.corner-vine.tr{top:7px;right:10px;transform:rotate(20deg)}
+.corner-vine.bl{bottom:7px;left:10px;transform:rotate(-160deg)}
+
+/* ── PARCHMENT QUOTE CARD ── */
+.quote-card{
+  background:linear-gradient(160deg,#fffef7 0%,#fff8ec 100%)!important;
+  border-top:3px solid var(--wine)!important;
+  position:relative;overflow:hidden;
+}
+.quote-card::before{
+  content:'';position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='.8' fill='rgba(184,134,11,.06)'/%3E%3C/svg%3E");
+  pointer-events:none;
+}
+.qc-orn{
+  display:flex;align-items:center;gap:8px;
+  font-size:.6rem;letter-spacing:3px;color:rgba(184,134,11,.45);margin:4px 0;
+}
+.qc-orn::before,.qc-orn::after{content:'';flex:1;height:1px;background:rgba(184,134,11,.18)}
+
+/* ── INTRO MASK HERO GRAPHIC ── */
+.intro-mask{font-size:68px;margin-bottom:8px;line-height:1;filter:drop-shadow(0 6px 16px rgba(139,26,26,.28));display:block}
+.playbill-tag{font-size:.58rem;font-weight:700;text-transform:uppercase;letter-spacing:4px;color:var(--text-soft);margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.playbill-tag::before,.playbill-tag::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* ── INTRO QUOTE EPIGRAPH ── */
+.epigraph{
+  font-family:'Playfair Display',serif;font-style:italic;font-size:.9rem;
+  color:var(--text-soft);line-height:1.7;margin-bottom:20px;
+  padding:12px 20px;border-left:3px solid rgba(184,134,11,.4);
+  background:rgba(184,134,11,.04);border-radius:0 8px 8px 0;text-align:left;
+}
+.epigraph cite{display:block;font-style:normal;font-size:.72rem;font-weight:700;letter-spacing:.5px;color:var(--text-soft);margin-top:5px;text-transform:uppercase}
+
+/* ── GOLD ORNAMENTAL DIVIDER ── */
+.gold-div{
+  display:flex;align-items:center;gap:10px;margin:18px 0;
+  font-size:.78rem;color:rgba(184,134,11,.55);letter-spacing:2px;
+}
+.gold-div::before,.gold-div::after{content:'';flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(184,134,11,.25),transparent)}
+
+/* ── HUD THEME ICON ── */
+.hud-icon{font-size:.85rem;opacity:.45;vertical-align:middle;margin-right:2px}
+
+/* ── VINE TRACKER TITLE ── */
+.vt-rose-ct{font-size:.42rem;text-transform:uppercase;letter-spacing:1px;color:var(--vine);margin-top:3px;font-weight:700}
+
+/* ── CHARACTER BUTTON SYMBOL BADGE ── */
+.char-symbol{
+  position:absolute;top:6px;right:7px;font-size:.7rem;opacity:.5;z-index:2;
+  line-height:1;
+}
+
+/* ── RESULTS DRAMATIS PERSONAE style ── */
+.dp-orn{font-family:'Playfair Display',serif;font-size:.62rem;font-style:italic;color:var(--text-soft);letter-spacing:1px;margin-bottom:3px}
+
+/* ── MINI GAME SCENE ENHANCEMENT ── */
+.mg-scene-icon{font-size:1.4rem;opacity:.5;margin:0 4px}
+
 #confetti-canvas{position:fixed;inset:0;pointer-events:none;z-index:999}
 
 @media(max-width:520px){
@@ -294,6 +373,30 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
 <div id="scene"></div>
 <div id="overlay"></div>
 
+<!-- Ambient story symbols drifting in background -->
+<div id="ambient">
+  <!-- Masquerade masks — iconic to the ball scene -->
+  <div class="amb" style="--op:.09;--rot:40deg;left:7%;font-size:4.2rem;animation-duration:32s;animation-delay:0s">🎭</div>
+  <div class="amb" style="--op:.07;--rot:-28deg;left:74%;font-size:5.5rem;animation-duration:42s;animation-delay:14s">🎭</div>
+  <div class="amb" style="--op:.06;--rot:18deg;left:44%;font-size:3.8rem;animation-duration:50s;animation-delay:26s">🎭</div>
+  <!-- Roses — love & beauty theme -->
+  <div class="amb" style="--op:.11;--rot:12deg;left:22%;font-size:2.6rem;animation-duration:24s;animation-delay:6s">🌹</div>
+  <div class="amb" style="--op:.09;--rot:-18deg;left:82%;font-size:3.2rem;animation-duration:36s;animation-delay:19s">🌹</div>
+  <!-- Feathers — masquerade / quill / letters (Don Pedro's scheme) -->
+  <div class="amb" style="--op:.08;--rot:-10deg;left:34%;font-size:3rem;animation-duration:44s;animation-delay:9s">🪶</div>
+  <div class="amb" style="--op:.07;--rot:22deg;left:62%;font-size:2.4rem;animation-duration:38s;animation-delay:3s">🪶</div>
+  <!-- Vine leaves -->
+  <div class="amb" style="--op:.13;--rot:55deg;left:14%;font-size:2.2rem;animation-duration:20s;animation-delay:8s">🍃</div>
+  <div class="amb" style="--op:.1;--rot:-42deg;left:58%;font-size:2.6rem;animation-duration:28s;animation-delay:4s">🍃</div>
+  <div class="amb" style="--op:.08;--rot:85deg;left:90%;font-size:1.9rem;animation-duration:35s;animation-delay:16s">🍃</div>
+  <!-- Gold sparkles — Sicilian stars -->
+  <div class="amb" style="--op:.18;--rot:0deg;left:52%;font-size:1.4rem;animation-duration:18s;animation-delay:11s">✦</div>
+  <div class="amb" style="--op:.14;--rot:0deg;left:18%;font-size:1rem;animation-duration:14s;animation-delay:2s">✦</div>
+  <div class="amb" style="--op:.12;--rot:0deg;left:78%;font-size:1.6rem;animation-duration:22s;animation-delay:7s">✦</div>
+  <!-- Heart — love theme -->
+  <div class="amb" style="--op:.07;--rot:5deg;left:40%;font-size:2rem;animation-duration:46s;animation-delay:22s">🤍</div>
+</div>
+
 <!-- SVG Rose Vine Tracker -->
 <div id="vine-tracker">
   <div class="vt-lbl">Progress</div>
@@ -308,35 +411,50 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
   <!-- ════ INTRO ════ -->
   <div id="intro" class="screen active">
     <div class="panel">
+      <span class="corner-vine tl">🌿</span>
+      <span class="corner-vine tr">🌿</span>
+      <span class="corner-vine bl">🌿</span>
+      <span class="corner-vine br">🌿</span>
       <div class="intro-body">
-        <div class="eyebrow">🍇 Much Ado About Nothing</div>
+        <span class="intro-mask">🎭</span>
+        <div class="playbill-tag">Shakespeare · Messina, Sicily</div>
         <h1 class="intro-title">The Vineyard<br>at Messina</h1>
-        <p class="intro-sub">A Quote &amp; Speaker Study Game</p>
+        <p class="intro-sub">A Much Ado About Nothing Quote Game</p>
+
+        <blockquote class="epigraph">
+          "For man is a giddy thing, and this is my conclusion."
+          <cite>— Benedick, Act 5, Scene 4</cite>
+        </blockquote>
+
         <p class="intro-flavor">
-          Don John has scattered autumn leaves across the speakers' words.
-          Brush them aside, name the voice, and tend your vines —
-          for every correct answer, a new rose blooms on the garden wall.
+          Behind every masquerade mask in Leonato's garden, a voice speaks —
+          wit, love, deception, and mischief. Can you name who said what?
+          Brush the autumn leaves aside and prove you know the play.
         </p>
-        <div class="divider-ornament">🌹 &nbsp; 🍃 &nbsp; 🌹</div>
+
+        <div class="gold-div">⚜&nbsp; The Rules &nbsp;⚜</div>
+
         <div class="rules-grid">
           <div class="rule-card">
             <div class="rule-icon">🍃</div>
-            <div class="rule-body"><strong>Reveal</strong><span>Hover answer cards to blow leaves away, then click your answer</span></div>
+            <div class="rule-body"><strong>Leaf Reveal</strong><span>Hover cards to blow away leaves, then click the speaker</span></div>
           </div>
           <div class="rule-card">
             <div class="rule-icon">⏱️</div>
-            <div class="rule-body"><strong>20 Seconds</strong><span>Each quote has a ticking timer — think fast!</span></div>
+            <div class="rule-body"><strong>20 Seconds</strong><span>Tick, tick — "nothing" moves slowly here</span></div>
           </div>
           <div class="rule-card">
-            <div class="rule-icon">🔥</div>
-            <div class="rule-body"><strong>Streak Bonus</strong><span>3+ correct in a row earns extra points each round</span></div>
+            <div class="rule-icon">🌹</div>
+            <div class="rule-body"><strong>Rose Vine</strong><span>Each correct answer blooms a rose on the garden wall</span></div>
           </div>
           <div class="rule-card">
             <div class="rule-icon">🍇</div>
-            <div class="rule-body"><strong>Grape Harvest</strong><span>Bonus mini-game after every 5 questions — click fast!</span></div>
+            <div class="rule-body"><strong>Grape Harvest</strong><span>Bonus round every 5 questions — click the grapes!</span></div>
           </div>
         </div>
-        <button class="btn-primary" id="btn-start">Enter the Vineyard →</button>
+
+        <div class="gold-div">🎭&nbsp; 25 quotes &nbsp;·&nbsp; 8 characters &nbsp;🎭</div>
+        <button class="btn-primary" id="btn-start">Enter the Vineyard &nbsp;→</button>
       </div>
     </div>
   </div>
@@ -348,7 +466,7 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
         <span class="hud-lbl">Score</span>
         <span class="hud-val" id="hud-score">0</span>
       </div>
-      <div class="hud-center" id="hud-q">Question 1 of 25</div>
+      <div class="hud-center" id="hud-q"><span class="hud-icon">🎭</span>Question 1 of 25</div>
       <div class="hud-stat r">
         <span class="hud-lbl">Streak</span>
         <span class="hud-val" id="hud-streak">🔥 0</span>
@@ -358,10 +476,15 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
     <div class="bar-wrap"><div class="bar-fill" id="tbar" style="width:100%"></div></div>
 
     <div class="panel quote-card" id="quote-card">
+      <span class="corner-vine tl">🍃</span>
+      <span class="corner-vine tr">🌹</span>
+      <span class="corner-vine bl">🌹</span>
+      <span class="corner-vine br">🍃</span>
       <div class="act-pill" id="act-tag">Act 1, Scene 1</div>
       <div class="q-mark">"</div>
       <p class="q-text" id="q-text"></p>
-      <p class="q-who">— Who spoke these words?</p>
+      <div class="qc-orn">🎭&ensp;·&ensp;🌹&ensp;·&ensp;🎭</div>
+      <p class="q-who">— Who spoke these words? —</p>
     </div>
 
     <div class="char-grid" id="char-grid"></div>
@@ -379,9 +502,9 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
   <div id="minigame" class="screen">
     <div class="panel">
       <div class="mg-body">
-        <div class="mg-eyebrow">🌿 Bonus Round</div>
-        <div class="mg-title">🍇 Grape Harvest!</div>
-        <div class="mg-sub">Click every bunch before time runs out — move quickly!</div>
+        <div class="mg-eyebrow"><span class="mg-scene-icon">🌿</span> Bonus Round <span class="mg-scene-icon">🌿</span></div>
+        <div class="mg-title">🍇 The Grape Harvest!</div>
+        <div class="mg-sub">"What a delight it is to pick the sweetest fruit!" — Click every bunch before time runs out!</div>
         <div class="mg-meta">
           <div class="mg-clock" id="mg-clock">6</div>
           <div class="mg-pts" id="mg-pts">+0 pts</div>
@@ -396,9 +519,13 @@ body{font-family:'Inter',system-ui,sans-serif;min-height:100vh;overflow-x:hidden
   <div id="results" class="screen">
     <div class="panel slide-up">
       <div class="results-body">
-        <div class="eyebrow">🌹 The Harvest Is In</div>
-        <h2 class="results-title">Your Final Verdict</h2>
-        <div class="results-orn">— 🌹 🍇 🌹 —</div>
+        <span class="corner-vine tl">🌿</span>
+        <span class="corner-vine tr">🌿</span>
+        <span class="corner-vine bl">🌿</span>
+        <span class="corner-vine br">🌿</span>
+        <div class="eyebrow">🎭 &nbsp; Dramatis Personae Results &nbsp; 🎭</div>
+        <h2 class="results-title">The Harvest Is In</h2>
+        <div class="results-orn">⚜ &nbsp; 🌹 &nbsp; 🍇 &nbsp; 🌹 &nbsp; ⚜</div>
         <div class="rank-icon" id="rank-icon">🏆</div>
         <div class="rank-name" id="rank-name"></div>
         <div class="rank-desc" id="rank-desc"></div>
@@ -451,14 +578,14 @@ const QUOTES=[
 ];
 
 const CHARS=[
-  {name:'Beatrice',     emoji:'🌹',color:'#c0392b',bg:'rgba(192,57,43,.1)'},
-  {name:'Benedick',     emoji:'⚔️',color:'#1a6fa3',bg:'rgba(26,111,163,.1)'},
-  {name:'Claudio',      emoji:'🌿',color:'#1a7a40',bg:'rgba(26,122,64,.1)'},
-  {name:'Don Pedro',    emoji:'👑',color:'#6c3691',bg:'rgba(108,54,145,.1)'},
-  {name:'Don John',     emoji:'🗡️',color:'#505a5e',bg:'rgba(80,90,94,.1)'},
-  {name:'Hero',         emoji:'🌸',color:'#b01270',bg:'rgba(176,18,112,.1)'},
-  {name:'Leonato',      emoji:'🏛️',color:'#9a7a08',bg:'rgba(154,122,8,.1)'},
-  {name:'Friar Francis',emoji:'✝️',color:'#6a7880',bg:'rgba(106,120,128,.1)'},
+  {name:'Beatrice',     emoji:'🌹',color:'#c0392b',bg:'rgba(192,57,43,.1)', role:'The Sharp-Tongued Wit',   sym:'🌹'},
+  {name:'Benedick',     emoji:'⚔️',color:'#1a6fa3',bg:'rgba(26,111,163,.1)',role:'The Reluctant Bachelor',  sym:'⚔️'},
+  {name:'Claudio',      emoji:'🌿',color:'#1a7a40',bg:'rgba(26,122,64,.1)', role:'The Lovesick Count',      sym:'🍊'},
+  {name:'Don Pedro',    emoji:'👑',color:'#6c3691',bg:'rgba(108,54,145,.1)',role:'Prince of Aragon',         sym:'👑'},
+  {name:'Don John',     emoji:'🗡️',color:'#505a5e',bg:'rgba(80,90,94,.1)', role:'The Scheming Villain',    sym:'🗡️'},
+  {name:'Hero',         emoji:'🌸',color:'#b01270',bg:'rgba(176,18,112,.1)',role:"The Governor's Daughter",  sym:'🕊️'},
+  {name:'Leonato',      emoji:'🏛️',color:'#9a7a08',bg:'rgba(154,122,8,.1)', role:'Governor of Messina',    sym:'🏛️'},
+  {name:'Friar Francis',emoji:'✝️',color:'#6a7880',bg:'rgba(106,120,128,.1)',role:'The Holy Friar',          sym:'✝️'},
 ];
 
 const LEAF_COLORS=['#4a8c2a','#2d5a1b','#8bc34a','#c8b030','#d4843a','#bf6f20','#5aaa30'];
@@ -471,15 +598,21 @@ const HIT_MSGS=[
   '🍇 Magnifico! Even Benedick would applaud!',
   '🌿 By my troth — a true scholar of Messina!',
   '☀️ Right as the Sicilian sun! Bellissimo!',
-  '🎭 Thou hast unmasked the speaker!',
+  '🎭 The masquerade is lifted — thou saw clearly!',
   '🌸 Hero herself smiles upon thee!',
+  '⚜ Worthy of Don Pedro\'s court!',
+  '🪶 Thy quill strikes true — magnifico!',
+  '🍊 Sweeter than any orange in Leonato\'s garden!',
+  '⚔️ A thrust! A touch! A hit — undeniable!',
 ];
 const MISS_MSGS=[
-  'Alas! Thou hast been deceived, as Claudio was.',
+  'Alas! Thou hast been deceived, as Claudio was at the altar.',
   'Zounds! Even Dogberry might have known that one.',
   'Nay — Don John himself could not have done worse.',
   'By my sword, thou art quite mistaken!',
-  'Methinks thou needest more study in Messina.',
+  'Methinks thou hast been masquerade-d into error.',
+  '🍊 A rotten orange indeed — that answer was wrong.',
+  'Even Balthasar\'s song could not distract thee from that miss.',
 ];
 
 // ─── STATE ─────────────────────────────────────────────
@@ -647,7 +780,7 @@ function loadQuestion(){
     btn.className='char-btn';
     btn.style.borderLeftColor=ch.color;
     btn.dataset.name=ch.name;
-    btn.innerHTML=`<div class="char-portrait" style="border-color:${ch.color};background:${ch.bg}">${ch.emoji}</div><div class="char-name">${ch.name}</div>`;
+    btn.innerHTML=`<span class="char-symbol">${ch.sym}</span><div class="char-portrait" style="border-color:${ch.color};background:${ch.bg}">${ch.emoji}</div><div class="char-name">${ch.name}</div><div class="char-role">${ch.role}</div>`;
     addLeaves(btn);
     btn.addEventListener('click',()=>choose(ch.name,q.speaker,btn));
     grid.appendChild(btn);
@@ -806,9 +939,28 @@ function launchConfetti(){
   })();
 }
 
+// ─── TWINKLING STARS IN SCENE ──────────────────────────
+function buildStars(){
+  const scene=$('scene');
+  for(let i=0;i<28;i++){
+    const s=document.createElement('div');
+    s.className='sky-star';
+    const sz=Math.random()*2.5+1.2;
+    s.style.cssText=`
+      width:${sz}px;height:${sz}px;
+      left:${Math.random()*100}%;
+      top:${Math.random()*34}%;
+      --td:${(Math.random()*3+2).toFixed(1)}s;
+      --tdelay:${(Math.random()*4).toFixed(1)}s;
+    `;
+    scene.appendChild(s);
+  }
+}
+
 // ─── INIT ──────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded',()=>{
   buildVine();
+  buildStars();
   $('btn-start').addEventListener('click',startGame);
   $('btn-next').addEventListener('click',nextQuestion);
   $('btn-again').addEventListener('click',()=>showScreen('intro'));
